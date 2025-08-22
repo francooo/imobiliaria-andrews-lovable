@@ -1,6 +1,7 @@
 import { Award, Users, MapPin, TrendingUp, Phone, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import corretorAndrews from '@/assets/corretor-andrews.jpg';
 
 const AboutSection = () => {
   const achievements = [
@@ -89,7 +90,7 @@ const AboutSection = () => {
               <Button
                 onClick={() => {
                   const message = "Olá Andrews! Gostaria de mais informações sobre seus serviços.";
-                  window.open(`https://wa.me/5551999999999?text=${encodeURIComponent(message)}`, '_blank');
+                  window.open(`https://api.whatsapp.com/send/?phone=5551981220279&text=${encodeURIComponent(message)}&type=phone_number&app_absent=0`, '_blank');
                 }}
                 className="bg-gradient-primary hover:shadow-glow transition-all duration-300 flex items-center space-x-2"
               >
@@ -107,23 +108,42 @@ const AboutSection = () => {
             </div>
           </div>
 
-          {/* Achievements Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {achievements.map((achievement, index) => (
-              <Card key={index} className="bg-gradient-card border border-border hover:shadow-glow transition-all duration-300 hover-scale">
-                <CardContent className="p-6 text-center">
-                  <div className="w-16 h-16 bg-gradient-primary rounded-full flex items-center justify-center mx-auto mb-4">
-                    <achievement.icon className="w-8 h-8 text-primary-foreground" />
-                  </div>
-                  <h4 className="text-lg font-semibold text-foreground mb-2">
-                    {achievement.title}
-                  </h4>
-                  <p className="text-muted-foreground text-sm">
-                    {achievement.description}
-                  </p>
-                </CardContent>
-              </Card>
-            ))}
+          {/* Photo and Achievements */}
+          <div className="space-y-8">
+            {/* Photo */}
+            <div className="text-center">
+              <div className="relative inline-block">
+                <div className="w-64 h-64 mx-auto rounded-full overflow-hidden border-4 border-primary/20 shadow-glow">
+                  <img 
+                    src={corretorAndrews} 
+                    alt="Andrews Franco - Corretor de Imóveis"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 bg-gradient-primary text-primary-foreground px-4 py-2 rounded-full text-sm font-medium">
+                  CRECI: 123456
+                </div>
+              </div>
+            </div>
+
+            {/* Achievements Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {achievements.map((achievement, index) => (
+                <Card key={index} className="bg-gradient-card border border-border hover:shadow-glow transition-all duration-300 hover-scale">
+                  <CardContent className="p-6 text-center">
+                    <div className="w-16 h-16 bg-gradient-primary rounded-full flex items-center justify-center mx-auto mb-4">
+                      <achievement.icon className="w-8 h-8 text-primary-foreground" />
+                    </div>
+                    <h4 className="text-lg font-semibold text-foreground mb-2">
+                      {achievement.title}
+                    </h4>
+                    <p className="text-muted-foreground text-sm">
+                      {achievement.description}
+                    </p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
           </div>
         </div>
 

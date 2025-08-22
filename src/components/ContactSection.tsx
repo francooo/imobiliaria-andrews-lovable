@@ -72,8 +72,8 @@ const ContactSection = () => {
     {
       icon: Phone,
       title: "Telefone / WhatsApp",
-      content: "(51) 99999-9999",
-      action: () => window.open("https://wa.me/5551999999999", "_blank")
+      content: "(51) 98122-0279",
+      action: () => window.open("https://api.whatsapp.com/send/?phone=5551981220279&text&type=phone_number&app_absent=0", "_blank")
     },
     {
       icon: Mail,
@@ -84,7 +84,7 @@ const ContactSection = () => {
     {
       icon: MapPin,
       title: "Localização",
-      content: "Porto Alegre, RS",
+      content: "Rua Eng. Ludolfo Boehl - Porto Alegre, RS",
       action: () => {}
     }
   ];
@@ -93,7 +93,7 @@ const ContactSection = () => {
     {
       icon: MessageCircle,
       name: "WhatsApp",
-      url: "https://wa.me/5551999999999",
+      url: "https://api.whatsapp.com/send/?phone=5551981220279&text&type=phone_number&app_absent=0",
       color: "hover:text-green-500"
     },
     {
@@ -248,7 +248,7 @@ const ContactSection = () => {
                 <Button
                   onClick={() => {
                     const message = "Olá Andrews! Gostaria de conversar sobre imóveis.";
-                    window.open(`https://wa.me/5551999999999?text=${encodeURIComponent(message)}`, '_blank');
+                    window.open(`https://api.whatsapp.com/send/?phone=5551981220279&text=${encodeURIComponent(message)}&type=phone_number&app_absent=0`, '_blank');
                   }}
                   className="bg-gradient-primary hover:shadow-glow transition-all duration-300"
                 >

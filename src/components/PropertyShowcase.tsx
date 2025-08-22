@@ -108,10 +108,8 @@ const PropertyShowcase = () => {
   };
 
   const handleViewDetails = (property: Property) => {
-    // Implementar visualização de detalhes ou abrir WhatsApp
-    const message = `Olá! Tenho interesse no imóvel: ${property.title} - ${property.city}. Poderia me dar mais informações?`;
-    const whatsappUrl = `https://wa.me/5551999999999?text=${encodeURIComponent(message)}`;
-    window.open(whatsappUrl, '_blank');
+    // Navegar para página de detalhes do imóvel
+    window.location.href = `/imovel/${property.id}`;
   };
 
   // Paginação
