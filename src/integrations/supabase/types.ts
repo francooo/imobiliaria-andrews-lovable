@@ -14,7 +14,141 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      leads: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          name: string
+          phone: string
+          source: string | null
+          utm_campaign: string | null
+          utm_medium: string | null
+          utm_source: string | null
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          name: string
+          phone: string
+          source?: string | null
+          utm_campaign?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          name?: string
+          phone?: string
+          source?: string | null
+          utm_campaign?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+        }
+        Relationships: []
+      }
+      properties: {
+        Row: {
+          area_size: number | null
+          bathrooms: number | null
+          bedrooms: number | null
+          city: string
+          created_at: string
+          description: string | null
+          featured: boolean | null
+          features: string[] | null
+          garage_spaces: number | null
+          id: string
+          images: string[] | null
+          neighborhood: string | null
+          price_max: number | null
+          price_min: number | null
+          property_type: string
+          status: string
+          title: string
+          transaction_type: string
+          updated_at: string
+        }
+        Insert: {
+          area_size?: number | null
+          bathrooms?: number | null
+          bedrooms?: number | null
+          city: string
+          created_at?: string
+          description?: string | null
+          featured?: boolean | null
+          features?: string[] | null
+          garage_spaces?: number | null
+          id?: string
+          images?: string[] | null
+          neighborhood?: string | null
+          price_max?: number | null
+          price_min?: number | null
+          property_type: string
+          status?: string
+          title: string
+          transaction_type: string
+          updated_at?: string
+        }
+        Update: {
+          area_size?: number | null
+          bathrooms?: number | null
+          bedrooms?: number | null
+          city?: string
+          created_at?: string
+          description?: string | null
+          featured?: boolean | null
+          features?: string[] | null
+          garage_spaces?: number | null
+          id?: string
+          images?: string[] | null
+          neighborhood?: string | null
+          price_max?: number | null
+          price_min?: number | null
+          property_type?: string
+          status?: string
+          title?: string
+          transaction_type?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      testimonials: {
+        Row: {
+          active: boolean | null
+          client_name: string
+          client_photo: string | null
+          comment: string
+          created_at: string
+          id: string
+          property_sold: string | null
+          rating: number | null
+        }
+        Insert: {
+          active?: boolean | null
+          client_name: string
+          client_photo?: string | null
+          comment: string
+          created_at?: string
+          id?: string
+          property_sold?: string | null
+          rating?: number | null
+        }
+        Update: {
+          active?: boolean | null
+          client_name?: string
+          client_photo?: string | null
+          comment?: string
+          created_at?: string
+          id?: string
+          property_sold?: string | null
+          rating?: number | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
