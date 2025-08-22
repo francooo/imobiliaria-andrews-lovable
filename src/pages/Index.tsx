@@ -1,12 +1,44 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useState, useEffect } from "react";
+import Header from "@/components/Header";
+import HeroSection from "@/components/HeroSection";
+import PropertyShowcase from "@/components/PropertyShowcase";
+import AboutSection from "@/components/AboutSection";
+import Testimonials from "@/components/Testimonials";
+import ContactSection from "@/components/ContactSection";
+import LeadPopup from "@/components/LeadPopup";
 
 const Index = () => {
+  const [showLeadPopup, setShowLeadPopup] = useState(false);
+
+  useEffect(() => {
+    // Verificar se o popup já foi mostrado
+    const popupShown = localStorage.getItem('leadPopupShown');
+    
+    if (!popupShown) {
+      // Mostrar popup após 3 segundos
+      const timer = setTimeout(() => {
+        setShowLeadPopup(true);
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
+  }, []);
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
+    <div className="min-h-screen bg-background">
+      <Header />
+      <main>
+        <HeroSection />
+        <PropertyShowcase />
+        <AboutSection />
+        <Testimonials />
+        <ContactSection />
+      </main>
+      
+      <LeadPopup 
+        isOpen={showLeadPopup} 
+        onClose={() => setShowLeadPopup(false)} 
+      />
     </div>
   );
 };
