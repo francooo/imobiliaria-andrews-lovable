@@ -123,7 +123,7 @@ const AdminPanel = () => {
         status: formData.status,
         featured: formData.featured,
         features: formData.features.length > 0 ? formData.features : null,
-        images: formData.images.length > 0 ? formData.images : null
+        images: formData.images // Always save the current images array, even if empty
       };
 
       let error;
