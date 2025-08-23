@@ -9,6 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import ImageUpload from "./ImageUpload";
 
 interface Property {
   id: string;
@@ -438,6 +439,12 @@ const AdminPanel = () => {
                     ))}
                   </div>
                 </div>
+
+                <ImageUpload
+                  images={formData.images}
+                  onImagesChange={(images) => handleInputChange('images', images)}
+                  maxImages={10}
+                />
 
                 <div className="flex items-center space-x-2">
                   <input
