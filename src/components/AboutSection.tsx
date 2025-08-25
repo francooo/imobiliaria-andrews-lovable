@@ -7,13 +7,13 @@ const AboutSection = () => {
   const achievements = [
     {
       icon: TrendingUp,
-      title: "500+ Imóveis Vendidos",
-      description: "Mais de 500 famílias realizaram o sonho da casa própria"
+      title: "60+ Imóveis Vendidos e Alugados",
+      description: "Mais de 60 famílias realizaram o sonho da casa própria"
     },
     {
       icon: Award,
-      title: "15+ Anos de Experiência",
-      description: "Mais de uma década dedicada ao mercado imobiliário"
+      title: "2+ Anos de Experiência",
+      description: "Sólida experiência dedicada ao mercado imobiliário"
     },
     {
       icon: Users,
@@ -45,7 +45,7 @@ const AboutSection = () => {
             Sobre <span className="text-primary">Andrews Franco</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Corretor de imóveis especialista com mais de 15 anos de experiência no mercado.
+            Corretor de imóveis especialista com mais de 2 anos de experiência no mercado.
             Comprometido em encontrar a solução perfeita para cada cliente.
           </p>
         </div>
@@ -58,7 +58,7 @@ const AboutSection = () => {
                 Sua jornada imobiliária começa aqui
               </h3>
               <p className="text-muted-foreground text-lg leading-relaxed mb-6">
-                Com mais de 15 anos de experiência no mercado imobiliário, dedico-me 
+                Com mais de 2 anos de experiência no mercado imobiliário, dedico-me 
                 integralmente a ajudar pessoas a realizarem seus sonhos. Seja comprando 
                 sua primeira casa, investindo em um imóvel ou vendendo uma propriedade, 
                 estou aqui para guiá-lo em cada etapa do processo.

@@ -88,7 +88,12 @@ const Header = () => {
           <div className="hidden lg:flex items-center space-x-4">
             <div className="flex items-center space-x-2 text-sm">
               <Phone className="w-4 h-4 text-primary" />
-              <span className="text-foreground">(51) 99999-9999</span>
+              <a href="https://api.whatsapp.com/send/?phone=5551981220279&text&type=phone_number&app_absent=0" 
+                 target="_blank" 
+                 rel="noopener noreferrer"
+                 className="text-foreground hover:text-primary transition-colors">
+                51981220279
+              </a>
             </div>
             <Button
               onClick={() => scrollToSection("contato")}
@@ -150,7 +155,12 @@ const Header = () => {
               <div className="px-4 py-2 border-t border-border">
                 <div className="flex items-center space-x-2 text-sm mb-3">
                   <Phone className="w-4 h-4 text-primary" />
-                  <span className="text-foreground">(51) 99999-9999</span>
+                  <a href="https://api.whatsapp.com/send/?phone=5551981220279&text&type=phone_number&app_absent=0" 
+                     target="_blank" 
+                     rel="noopener noreferrer"
+                     className="text-foreground hover:text-primary transition-colors">
+                    51981220279
+                  </a>
                 </div>
                 <Button
                   onClick={() => scrollToSection("contato")}

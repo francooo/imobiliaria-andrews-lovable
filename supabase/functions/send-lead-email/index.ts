@@ -66,7 +66,7 @@ const handler = async (req: Request): Promise<Response> => {
           </p>
           
           <div style="text-align: center; margin: 30px 0;">
-            <a href="https://wa.me/5551999999999" 
+            <a href="https://api.whatsapp.com/send/?phone=5551981220279&text&type=phone_number&app_absent=0" 
                style="background: linear-gradient(135deg, #FFC107, #FF8F00); color: #000; padding: 15px 30px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block;">
               📱 Falar no WhatsApp
             </a>
@@ -76,8 +76,8 @@ const handler = async (req: Request): Promise<Response> => {
           
           <p style="text-align: center; color: #666; font-size: 14px;">
             <strong>Andrews Franco - Corretor de Imóveis</strong><br>
-            15+ anos de experiência | 500+ imóveis vendidos<br>
-            📞 (51) 99999-9999 | 📧 andrews@corretorandrews.com.br
+            2+ anos de experiência | 60+ imóveis vendidos e alugados<br>
+            📞 51981220279 | 📧 andrews@corretorandrews.com.br
           </p>
         </div>
       `,

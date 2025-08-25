@@ -6,6 +6,7 @@ import AboutSection from "@/components/AboutSection";
 import Testimonials from "@/components/Testimonials";
 import ContactSection from "@/components/ContactSection";
 import LeadPopup from "@/components/LeadPopup";
+import WhatsAppFloat from "@/components/WhatsAppFloat";
 
 const Index = () => {
   const [showLeadPopup, setShowLeadPopup] = useState(false);
@@ -39,6 +40,7 @@ const Index = () => {
         isOpen={showLeadPopup} 
         onClose={() => setShowLeadPopup(false)} 
       />
+      <WhatsAppFloat />
     </div>
   );
 };
