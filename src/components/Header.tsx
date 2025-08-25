@@ -96,6 +96,14 @@ const Header = () => {
               </a>
             </div>
             <Button
+              variant="outline"
+              size="sm"
+              onClick={() => window.location.href = '/login'}
+              className="mr-2"
+            >
+              Admin
+            </Button>
+            <Button
               onClick={() => scrollToSection("contato")}
               className="bg-gradient-primary hover:shadow-glow transition-all duration-300"
             >
@@ -162,12 +170,25 @@ const Header = () => {
                     51981220279
                   </a>
                 </div>
-                <Button
-                  onClick={() => scrollToSection("contato")}
-                  className="w-full bg-gradient-primary hover:shadow-glow transition-all duration-300"
-                >
-                  Fale Comigo
-                </Button>
+                <div className="space-y-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      window.location.href = '/login';
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className="w-full"
+                  >
+                    Admin
+                  </Button>
+                  <Button
+                    onClick={() => scrollToSection("contato")}
+                    className="w-full bg-gradient-primary hover:shadow-glow transition-all duration-300"
+                  >
+                    Fale Comigo
+                  </Button>
+                </div>
               </div>
             </nav>
           </div>
