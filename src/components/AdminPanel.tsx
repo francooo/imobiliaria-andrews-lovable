@@ -84,6 +84,10 @@ const AdminPanel = () => {
 
   const handleInputChange = (field: string, value: any) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+    // Debug log for images
+    if (field === 'images') {
+      console.log('Images updated:', value);
+    }
   };
 
   const addFeature = () => {
@@ -123,7 +127,7 @@ const AdminPanel = () => {
         status: formData.status,
         featured: formData.featured,
         features: formData.features.length > 0 ? formData.features : null,
-        images: formData.images // Always save the current images array, even if empty
+        images: formData.images.length > 0 ? formData.images : [] // Always save the current images array, using empty array instead of null
       };
 
       let error;

@@ -79,16 +79,6 @@ const LeadPopup = ({ isOpen, onClose }: LeadPopupProps) => {
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md mx-4 bg-gradient-card border border-border shadow-elegant">
         <div className="relative">
-          {/* Close Button */}
-          <Button
-            variant="ghost"
-            size="icon"
-            className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-muted hover:bg-muted/80"
-            onClick={onClose}
-          >
-            <X className="w-4 h-4" />
-          </Button>
-
           {/* Header */}
           <div className="text-center mb-6">
             <div className="w-16 h-16 bg-gradient-primary rounded-full flex items-center justify-center mx-auto mb-4">
