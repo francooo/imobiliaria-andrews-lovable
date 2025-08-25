@@ -127,8 +127,10 @@ const AdminPanel = () => {
         status: formData.status,
         featured: formData.featured,
         features: formData.features.length > 0 ? formData.features : null,
-        images: formData.images.length > 0 ? formData.images : [] // Always save the current images array, using empty array instead of null
+        images: formData.images || [] // Always save the current images array
       };
+
+      console.log('Salvando propriedade com imagens:', propertyData.images);
 
       let error;
       if (editingProperty) {
@@ -137,11 +139,27 @@ const AdminPanel = () => {
           .update(propertyData)
           .eq('id', editingProperty.id);
         error = result.error;
+        
+        if (!error) {
+          // Atualizar o estado local da propriedade editada imediatamente
+          const updatedProperty = { ...editingProperty, ...propertyData };
+          setProperties(prev => prev.map(p => 
+            p.id === editingProperty.id ? updatedProperty : p
+          ));
+          
+          // Atualizar também a propriedade sendo editada
+          setEditingProperty(updatedProperty);
+        }
       } else {
         const result = await supabase
           .from('properties')
           .insert([propertyData]);
         error = result.error;
+        
+        if (!error) {
+          // Para novos imóveis, resetar o formulário e recarregar dados
+          resetForm();
+        }
       }
 
       if (error) throw error;
@@ -151,8 +169,10 @@ const AdminPanel = () => {
         description: `Imóvel ${editingProperty ? 'atualizado' : 'criado'} com sucesso!`,
       });
 
-      resetForm();
-      fetchProperties();
+      // Recarregar apenas se não estivermos editando (para não perder o estado do formulário)
+      if (!editingProperty) {
+        fetchProperties();
+      }
     } catch (error) {
       console.error('Erro ao salvar imóvel:', error);
       toast({
