@@ -14,7 +14,143 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      leads: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          message: string | null
+          name: string
+          phone: string | null
+          property_id: string | null
+          source: string | null
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          message?: string | null
+          name: string
+          phone?: string | null
+          property_id?: string | null
+          source?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          message?: string | null
+          name?: string
+          phone?: string | null
+          property_id?: string | null
+          source?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "leads_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      properties: {
+        Row: {
+          active: boolean | null
+          area_m2: number | null
+          bathrooms: number | null
+          bedrooms: number | null
+          city: string | null
+          created_at: string
+          description: string | null
+          featured: boolean | null
+          id: string
+          images: string[] | null
+          neighborhood: string | null
+          parking_spots: number | null
+          price_max: number | null
+          price_min: number | null
+          property_type: string
+          title: string
+          transaction_type: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean | null
+          area_m2?: number | null
+          bathrooms?: number | null
+          bedrooms?: number | null
+          city?: string | null
+          created_at?: string
+          description?: string | null
+          featured?: boolean | null
+          id?: string
+          images?: string[] | null
+          neighborhood?: string | null
+          parking_spots?: number | null
+          price_max?: number | null
+          price_min?: number | null
+          property_type: string
+          title: string
+          transaction_type: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean | null
+          area_m2?: number | null
+          bathrooms?: number | null
+          bedrooms?: number | null
+          city?: string | null
+          created_at?: string
+          description?: string | null
+          featured?: boolean | null
+          id?: string
+          images?: string[] | null
+          neighborhood?: string | null
+          parking_spots?: number | null
+          price_max?: number | null
+          price_min?: number | null
+          property_type?: string
+          title?: string
+          transaction_type?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      testimonials: {
+        Row: {
+          active: boolean | null
+          avatar_url: string | null
+          content: string
+          created_at: string
+          id: string
+          name: string
+          rating: number | null
+          role: string | null
+        }
+        Insert: {
+          active?: boolean | null
+          avatar_url?: string | null
+          content: string
+          created_at?: string
+          id?: string
+          name: string
+          rating?: number | null
+          role?: string | null
+        }
+        Update: {
+          active?: boolean | null
+          avatar_url?: string | null
+          content?: string
+          created_at?: string
+          id?: string
+          name?: string
+          rating?: number | null
+          role?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
