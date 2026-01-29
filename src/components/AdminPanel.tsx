@@ -11,6 +11,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import ImageUpload from "./ImageUpload";
 import { Database } from "@/integrations/supabase/types";
+import AdminMenu from "./admin/AdminMenu";
+import DashboardSummary from "./admin/DashboardSummary";
 
 type Property = Database['public']['Tables']['properties']['Row'];
 type PropertyInsert = Database['public']['Tables']['properties']['Insert'];
@@ -21,7 +23,7 @@ const AdminPanel = () => {
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [editingProperty, setEditingProperty] = useState<Property | null>(null);
-  
+
   const initialFormState = {
     title: '',
     description: '',
@@ -74,7 +76,7 @@ const AdminPanel = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     try {
       const propertyData: PropertyInsert = {
         title: formData.title,
@@ -192,9 +194,13 @@ const AdminPanel = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <AdminMenu />
+
       <div className="container mx-auto px-4 py-8">
+        <DashboardSummary />
+
         <div className="flex items-center justify-between mb-8">
-          <h1 className="text-3xl font-bold text-foreground">Painel Administrativo</h1>
+          <h2 className="text-2xl font-bold text-foreground">Gerenciar Imóveis</h2>
           <Button onClick={() => setShowForm(true)} className="bg-gradient-primary">
             <Plus className="w-4 h-4 mr-2" />
             Novo Imóvel
@@ -338,7 +344,7 @@ const AdminPanel = () => {
 
                   <div className="flex flex-col justify-end space-y-4">
                     <div className="flex items-center space-x-2">
-                       <input
+                      <input
                         type="checkbox"
                         id="active"
                         checked={formData.active}
@@ -407,7 +413,7 @@ const AdminPanel = () => {
                     </Button>
                   </div>
                 </div>
-                
+
                 <div className="space-y-2 text-sm">
                   <div className="flex items-center justify-between">
                     <span className="text-muted-foreground">Tipo:</span>
