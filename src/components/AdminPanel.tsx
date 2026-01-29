@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Plus, Edit, Trash2, Upload, X } from "lucide-react";
+import { Plus, Edit, Trash2, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -10,33 +10,19 @@ import { Badge } from "@/components/ui/badge";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import ImageUpload from "./ImageUpload";
+import { Database } from "@/integrations/supabase/types";
 
-interface Property {
-  id: string;
-  title: string;
-  description?: string;
-  property_type: string;
-  transaction_type: string;
-  price_min?: number;
-  price_max?: number;
-  city: string;
-  neighborhood?: string;
-  bedrooms?: number;
-  bathrooms?: number;
-  garage_spaces?: number;
-  area_size?: number;
-  images?: string[];
-  features?: string[];
-  status: string;
-  featured: boolean;
-}
+type Property = Database['public']['Tables']['properties']['Row'];
+type PropertyInsert = Database['public']['Tables']['properties']['Insert'];
+type PropertyUpdate = Database['public']['Tables']['properties']['Update'];
 
 const AdminPanel = () => {
   const [properties, setProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [editingProperty, setEditingProperty] = useState<Property | null>(null);
-  const [formData, setFormData] = useState({
+  
+  const initialFormState = {
     title: '',
     description: '',
     property_type: '',
@@ -47,14 +33,14 @@ const AdminPanel = () => {
     neighborhood: '',
     bedrooms: '',
     bathrooms: '',
-    garage_spaces: '',
-    area_size: '',
-    status: 'disponivel',
+    parking_spots: '',
+    area_m2: '',
+    active: true,
     featured: false,
-    features: [] as string[],
     images: [] as string[]
-  });
-  const [newFeature, setNewFeature] = useState('');
+  };
+
+  const [formData, setFormData] = useState(initialFormState);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -84,34 +70,13 @@ const AdminPanel = () => {
 
   const handleInputChange = (field: string, value: any) => {
     setFormData(prev => ({ ...prev, [field]: value }));
-    // Debug log for images
-    if (field === 'images') {
-      console.log('Images updated:', value);
-    }
-  };
-
-  const addFeature = () => {
-    if (newFeature.trim()) {
-      setFormData(prev => ({
-        ...prev,
-        features: [...prev.features, newFeature.trim()]
-      }));
-      setNewFeature('');
-    }
-  };
-
-  const removeFeature = (index: number) => {
-    setFormData(prev => ({
-      ...prev,
-      features: prev.features.filter((_, i) => i !== index)
-    }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     try {
-      const propertyData = {
+      const propertyData: PropertyInsert = {
         title: formData.title,
         description: formData.description || null,
         property_type: formData.property_type,
@@ -122,44 +87,25 @@ const AdminPanel = () => {
         neighborhood: formData.neighborhood || null,
         bedrooms: formData.bedrooms ? parseInt(formData.bedrooms) : null,
         bathrooms: formData.bathrooms ? parseInt(formData.bathrooms) : null,
-        garage_spaces: formData.garage_spaces ? parseInt(formData.garage_spaces) : null,
-        area_size: formData.area_size ? parseFloat(formData.area_size) : null,
-        status: formData.status,
+        parking_spots: formData.parking_spots ? parseInt(formData.parking_spots) : null,
+        area_m2: formData.area_m2 ? parseFloat(formData.area_m2) : null,
+        active: formData.active,
         featured: formData.featured,
-        features: formData.features.length > 0 ? formData.features : null,
-        images: formData.images || [] // Always save the current images array
+        images: formData.images || []
       };
-
-      console.log('Salvando propriedade com imagens:', propertyData.images);
 
       let error;
       if (editingProperty) {
-        const result = await supabase
+        const { error: updateError } = await supabase
           .from('properties')
           .update(propertyData)
           .eq('id', editingProperty.id);
-        error = result.error;
-        
-        if (!error) {
-          // Atualizar o estado local da propriedade editada imediatamente
-          const updatedProperty = { ...editingProperty, ...propertyData };
-          setProperties(prev => prev.map(p => 
-            p.id === editingProperty.id ? updatedProperty : p
-          ));
-          
-          // Atualizar também a propriedade sendo editada
-          setEditingProperty(updatedProperty);
-        }
+        error = updateError;
       } else {
-        const result = await supabase
+        const { error: insertError } = await supabase
           .from('properties')
           .insert([propertyData]);
-        error = result.error;
-        
-        if (!error) {
-          // Para novos imóveis, resetar o formulário e recarregar dados
-          resetForm();
-        }
+        error = insertError;
       }
 
       if (error) throw error;
@@ -169,10 +115,8 @@ const AdminPanel = () => {
         description: `Imóvel ${editingProperty ? 'atualizado' : 'criado'} com sucesso!`,
       });
 
-      // Recarregar apenas se não estivermos editando (para não perder o estado do formulário)
-      if (!editingProperty) {
-        fetchProperties();
-      }
+      resetForm();
+      fetchProperties();
     } catch (error) {
       console.error('Erro ao salvar imóvel:', error);
       toast({
@@ -192,15 +136,14 @@ const AdminPanel = () => {
       transaction_type: property.transaction_type,
       price_min: property.price_min?.toString() || '',
       price_max: property.price_max?.toString() || '',
-      city: property.city,
+      city: property.city || '',
       neighborhood: property.neighborhood || '',
       bedrooms: property.bedrooms?.toString() || '',
       bathrooms: property.bathrooms?.toString() || '',
-      garage_spaces: property.garage_spaces?.toString() || '',
-      area_size: property.area_size?.toString() || '',
-      status: property.status,
-      featured: property.featured,
-      features: property.features || [],
+      parking_spots: property.parking_spots?.toString() || '',
+      area_m2: property.area_m2?.toString() || '',
+      active: property.active ?? true,
+      featured: property.featured ?? false,
       images: property.images || []
     });
     setShowForm(true);
@@ -234,27 +177,9 @@ const AdminPanel = () => {
   };
 
   const resetForm = () => {
-    setFormData({
-      title: '',
-      description: '',
-      property_type: '',
-      transaction_type: '',
-      price_min: '',
-      price_max: '',
-      city: '',
-      neighborhood: '',
-      bedrooms: '',
-      bathrooms: '',
-      garage_spaces: '',
-      area_size: '',
-      status: 'disponivel',
-      featured: false,
-      features: [],
-      images: []
-    });
+    setFormData(initialFormState);
     setEditingProperty(null);
     setShowForm(false);
-    setNewFeature('');
   };
 
   if (loading) {
@@ -392,37 +317,47 @@ const AdminPanel = () => {
                   </div>
 
                   <div>
-                    <Label htmlFor="garage_spaces">Vagas de Garagem</Label>
+                    <Label htmlFor="parking_spots">Vagas de Garagem</Label>
                     <Input
-                      id="garage_spaces"
+                      id="parking_spots"
                       type="number"
-                      value={formData.garage_spaces}
-                      onChange={(e) => handleInputChange('garage_spaces', e.target.value)}
+                      value={formData.parking_spots}
+                      onChange={(e) => handleInputChange('parking_spots', e.target.value)}
                     />
                   </div>
 
                   <div>
-                    <Label htmlFor="area_size">Área (m²)</Label>
+                    <Label htmlFor="area_m2">Área (m²)</Label>
                     <Input
-                      id="area_size"
+                      id="area_m2"
                       type="number"
-                      value={formData.area_size}
-                      onChange={(e) => handleInputChange('area_size', e.target.value)}
+                      value={formData.area_m2}
+                      onChange={(e) => handleInputChange('area_m2', e.target.value)}
                     />
                   </div>
 
-                  <div>
-                    <Label htmlFor="status">Status</Label>
-                    <Select value={formData.status} onValueChange={(value) => handleInputChange('status', value)}>
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="disponivel">Disponível</SelectItem>
-                        <SelectItem value="vendido">Vendido</SelectItem>
-                        <SelectItem value="alugado">Alugado</SelectItem>
-                      </SelectContent>
-                    </Select>
+                  <div className="flex flex-col justify-end space-y-4">
+                    <div className="flex items-center space-x-2">
+                       <input
+                        type="checkbox"
+                        id="active"
+                        checked={formData.active}
+                        onChange={(e) => handleInputChange('active', e.target.checked)}
+                        className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
+                      />
+                      <Label htmlFor="active">Imóvel Ativo / Disponível</Label>
+                    </div>
+
+                    <div className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        id="featured"
+                        checked={formData.featured}
+                        onChange={(e) => handleInputChange('featured', e.target.checked)}
+                        className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
+                      />
+                      <Label htmlFor="featured">Imóvel em destaque</Label>
+                    </div>
                   </div>
                 </div>
 
@@ -436,49 +371,11 @@ const AdminPanel = () => {
                   />
                 </div>
 
-                <div>
-                  <Label>Características</Label>
-                  <div className="flex gap-2 mb-2">
-                    <Input
-                      placeholder="Nova característica"
-                      value={newFeature}
-                      onChange={(e) => setNewFeature(e.target.value)}
-                    />
-                    <Button type="button" variant="outline" onClick={addFeature}>
-                      Adicionar
-                    </Button>
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    {formData.features.map((feature, index) => (
-                      <Badge key={index} variant="outline" className="flex items-center gap-1">
-                        {feature}
-                        <button
-                          type="button"
-                          onClick={() => removeFeature(index)}
-                          className="text-xs hover:text-destructive"
-                        >
-                          ×
-                        </button>
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
-
                 <ImageUpload
                   images={formData.images}
                   onImagesChange={(images) => handleInputChange('images', images)}
                   maxImages={10}
                 />
-
-                <div className="flex items-center space-x-2">
-                  <input
-                    type="checkbox"
-                    id="featured"
-                    checked={formData.featured}
-                    onChange={(e) => handleInputChange('featured', e.target.checked)}
-                  />
-                  <Label htmlFor="featured">Imóvel em destaque</Label>
-                </div>
 
                 <div className="flex gap-4">
                   <Button type="submit" className="bg-gradient-primary">
@@ -522,8 +419,8 @@ const AdminPanel = () => {
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-muted-foreground">Status:</span>
-                    <Badge variant={property.status === 'disponivel' ? 'default' : 'secondary'}>
-                      {property.status}
+                    <Badge variant={property.active ? 'default' : 'secondary'}>
+                      {property.active ? 'Ativo' : 'Inativo'}
                     </Badge>
                   </div>
                   {property.featured && (

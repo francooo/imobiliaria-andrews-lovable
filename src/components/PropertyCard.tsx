@@ -2,26 +2,9 @@ import { Heart, MapPin, Bed, Bath, Car, Maximize, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
+import { Database } from "@/integrations/supabase/types";
 
-interface Property {
-  id: string;
-  title: string;
-  description?: string;
-  property_type: string;
-  transaction_type: string;
-  price_min?: number;
-  price_max?: number;
-  city: string;
-  neighborhood?: string;
-  bedrooms?: number;
-  bathrooms?: number;
-  garage_spaces?: number;
-  area_size?: number;
-  images?: string[];
-  features?: string[];
-  status: string;
-  featured: boolean;
-}
+type Property = Database['public']['Tables']['properties']['Row'];
 
 interface PropertyCardProps {
   property: Property;
@@ -32,9 +15,9 @@ const PropertyCard = ({ property, onViewDetails }: PropertyCardProps) => {
   const [isFavorited, setIsFavorited] = useState(false);
   const [imageError, setImageError] = useState(false);
 
-  const formatPrice = (min?: number, max?: number) => {
+  const formatPrice = (min?: number | null, max?: number | null) => {
     if (!min && !max) return "Consultar preço";
-    
+
     const formatNumber = (num: number) => {
       if (num >= 1000000) {
         return `${(num / 1000000).toFixed(1)}M`;
@@ -47,7 +30,7 @@ const PropertyCard = ({ property, onViewDetails }: PropertyCardProps) => {
     if (min && max && min !== max) {
       return `R$ ${formatNumber(min)} - ${formatNumber(max)}`;
     }
-    
+
     return `R$ ${formatNumber(min || max || 0)}`;
   };
 
@@ -79,10 +62,10 @@ const PropertyCard = ({ property, onViewDetails }: PropertyCardProps) => {
           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
           onError={() => setImageError(true)}
         />
-        
+
         {/* Badges */}
         <div className="absolute top-4 left-4 flex flex-col gap-1">
-          <Badge 
+          <Badge
             variant={property.transaction_type === 'venda' ? 'default' : 'secondary'}
             className="bg-primary/90 text-primary-foreground"
           >
@@ -99,11 +82,10 @@ const PropertyCard = ({ property, onViewDetails }: PropertyCardProps) => {
         <Button
           variant="ghost"
           size="icon"
-          className={`absolute top-4 right-4 w-10 h-10 rounded-full backdrop-blur-md transition-colors ${
-            isFavorited 
-              ? 'bg-primary/20 text-primary' 
+          className={`absolute top-4 right-4 w-10 h-10 rounded-full backdrop-blur-md transition-colors ${isFavorited
+              ? 'bg-primary/20 text-primary'
               : 'bg-background/20 text-foreground hover:bg-primary/20 hover:text-primary'
-          }`}
+            }`}
           onClick={(e) => {
             e.stopPropagation();
             setIsFavorited(!isFavorited);
@@ -145,29 +127,29 @@ const PropertyCard = ({ property, onViewDetails }: PropertyCardProps) => {
         {/* Property Details */}
         <div className="flex items-center justify-between text-sm text-muted-foreground mb-4">
           <div className="flex items-center space-x-4">
-            {property.bedrooms !== undefined && property.bedrooms > 0 && (
+            {property.bedrooms !== undefined && property.bedrooms !== null && property.bedrooms > 0 && (
               <div className="flex items-center">
                 <Bed className="w-4 h-4 mr-1" />
                 <span>{property.bedrooms}</span>
               </div>
             )}
-            {property.bathrooms !== undefined && property.bathrooms > 0 && (
+            {property.bathrooms !== undefined && property.bathrooms !== null && property.bathrooms > 0 && (
               <div className="flex items-center">
                 <Bath className="w-4 h-4 mr-1" />
                 <span>{property.bathrooms}</span>
               </div>
             )}
-            {property.garage_spaces !== undefined && property.garage_spaces > 0 && (
+            {property.parking_spots !== undefined && property.parking_spots !== null && property.parking_spots > 0 && (
               <div className="flex items-center">
                 <Car className="w-4 h-4 mr-1" />
-                <span>{property.garage_spaces}</span>
+                <span>{property.parking_spots}</span>
               </div>
             )}
           </div>
-          {property.area_size && (
+          {property.area_m2 && (
             <div className="flex items-center">
               <Maximize className="w-4 h-4 mr-1" />
-              <span>{property.area_size}m²</span>
+              <span>{property.area_m2}m²</span>
             </div>
           )}
         </div>
@@ -176,22 +158,6 @@ const PropertyCard = ({ property, onViewDetails }: PropertyCardProps) => {
         <div className="text-sm text-muted-foreground mb-4">
           {getPropertyTypeLabel(property.property_type)}
         </div>
-
-        {/* Features */}
-        {property.features && property.features.length > 0 && (
-          <div className="flex flex-wrap gap-1 mb-4">
-            {property.features.slice(0, 3).map((feature, index) => (
-              <Badge key={index} variant="outline" className="text-xs">
-                {feature}
-              </Badge>
-            ))}
-            {property.features.length > 3 && (
-              <Badge variant="outline" className="text-xs">
-                +{property.features.length - 3} mais
-              </Badge>
-            )}
-          </div>
-        )}
 
         {/* CTA Button */}
         <Button

@@ -3,15 +3,9 @@ import { Star, ChevronLeft, ChevronRight, Quote } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
+import { Database } from "@/integrations/supabase/types";
 
-interface Testimonial {
-  id: string;
-  client_name: string;
-  client_photo?: string;
-  rating: number;
-  comment: string;
-  property_sold?: string;
-}
+type Testimonial = Database['public']['Tables']['testimonials']['Row'];
 
 const Testimonials = () => {
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
@@ -40,24 +34,24 @@ const Testimonials = () => {
   };
 
   const nextTestimonial = () => {
-    setCurrentIndex((prevIndex) => 
+    setCurrentIndex((prevIndex) =>
       prevIndex === testimonials.length - 1 ? 0 : prevIndex + 1
     );
   };
 
   const prevTestimonial = () => {
-    setCurrentIndex((prevIndex) => 
+    setCurrentIndex((prevIndex) =>
       prevIndex === 0 ? testimonials.length - 1 : prevIndex - 1
     );
   };
 
-  const renderStars = (rating: number) => {
+  const renderStars = (rating: number | null) => {
+    const stars = rating || 5; // Default to 5 if null
     return Array.from({ length: 5 }, (_, i) => (
       <Star
         key={i}
-        className={`w-5 h-5 ${
-          i < rating ? 'text-primary fill-current' : 'text-muted-foreground'
-        }`}
+        className={`w-5 h-5 ${i < stars ? 'text-primary fill-current' : 'text-muted-foreground'
+          }`}
       />
     ));
   };
@@ -77,7 +71,7 @@ const Testimonials = () => {
             O que nossos <span className="text-primary">clientes</span> dizem
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            A satisfação dos nossos clientes é a nossa maior conquista. 
+            A satisfação dos nossos clientes é a nossa maior conquista.
             Veja alguns depoimentos de quem realizou o sonho da casa própria conosco.
           </p>
         </div>
@@ -89,7 +83,7 @@ const Testimonials = () => {
               <div className="relative">
                 {/* Quote Icon */}
                 <Quote className="absolute -top-4 -left-4 w-12 h-12 text-primary/20" />
-                
+
                 <div className="text-center">
                   {/* Rating */}
                   <div className="flex justify-center items-center space-x-1 mb-6">
@@ -98,7 +92,7 @@ const Testimonials = () => {
 
                   {/* Comment */}
                   <blockquote className="text-lg md:text-xl text-foreground leading-relaxed mb-8 font-medium">
-                    "{currentTestimonial.comment}"
+                    "{currentTestimonial.content}"
                   </blockquote>
 
                   {/* Client Info */}
@@ -106,8 +100,8 @@ const Testimonials = () => {
                     {/* Photo */}
                     <div className="relative">
                       <img
-                        src={currentTestimonial.client_photo || '/placeholder.svg'}
-                        alt={currentTestimonial.client_name}
+                        src={currentTestimonial.avatar_url || '/placeholder.svg'}
+                        alt={currentTestimonial.name}
                         className="w-16 h-16 rounded-full object-cover border-2 border-primary/20"
                         onError={(e) => {
                           const target = e.target as HTMLImageElement;
@@ -122,11 +116,11 @@ const Testimonials = () => {
                     {/* Name and Property */}
                     <div className="text-center md:text-left">
                       <h4 className="text-lg font-semibold text-foreground">
-                        {currentTestimonial.client_name}
+                        {currentTestimonial.name}
                       </h4>
-                      {currentTestimonial.property_sold && (
+                      {currentTestimonial.role && (
                         <p className="text-muted-foreground text-sm">
-                          {currentTestimonial.property_sold}
+                          {currentTestimonial.role}
                         </p>
                       )}
                     </div>
@@ -154,11 +148,10 @@ const Testimonials = () => {
                   <button
                     key={index}
                     onClick={() => setCurrentIndex(index)}
-                    className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                      index === currentIndex
+                    className={`w-3 h-3 rounded-full transition-all duration-300 ${index === currentIndex
                         ? 'bg-primary scale-125'
                         : 'bg-muted-foreground/30 hover:bg-muted-foreground/50'
-                    }`}
+                      }`}
                   />
                 ))}
               </div>

@@ -4,26 +4,9 @@ import { ChevronLeft, MapPin, Bed, Bath, Car, Maximize, Share2, Heart, Phone } f
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { supabase } from "@/integrations/supabase/client";
+import { Database } from "@/integrations/supabase/types";
 
-interface Property {
-  id: string;
-  title: string;
-  description?: string;
-  property_type: string;
-  transaction_type: string;
-  price_min?: number;
-  price_max?: number;
-  city: string;
-  neighborhood?: string;
-  bedrooms?: number;
-  bathrooms?: number;
-  garage_spaces?: number;
-  area_size?: number;
-  images?: string[];
-  features?: string[];
-  status: string;
-  featured: boolean;
-}
+type Property = Database['public']['Tables']['properties']['Row'];
 
 const PropertyDetails = () => {
   const { id } = useParams<{ id: string }>();
@@ -56,9 +39,9 @@ const PropertyDetails = () => {
     }
   };
 
-  const formatPrice = (min?: number, max?: number) => {
+  const formatPrice = (min?: number | null, max?: number | null) => {
     if (!min && !max) return "Consultar preço";
-    
+
     const formatNumber = (num: number) => {
       if (num >= 1000000) {
         return `${(num / 1000000).toFixed(1)}M`;
@@ -71,7 +54,7 @@ const PropertyDetails = () => {
     if (min && max && min !== max) {
       return `R$ ${formatNumber(min)} - ${formatNumber(max)}`;
     }
-    
+
     return `R$ ${formatNumber(min || max || 0)}`;
   };
 
@@ -124,21 +107,21 @@ const PropertyDetails = () => {
       <div className="bg-card border-b border-border">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-            <Button 
-              variant="ghost" 
+            <Button
+              variant="ghost"
               onClick={() => navigate('/')}
               className="flex items-center space-x-2"
             >
               <ChevronLeft className="w-5 h-5" />
               <span>Voltar</span>
             </Button>
-            
+
             <div className="flex items-center space-x-2">
               <Button variant="outline" size="icon">
                 <Share2 className="w-4 h-4" />
               </Button>
-              <Button 
-                variant="outline" 
+              <Button
+                variant="outline"
                 size="icon"
                 onClick={() => setIsFavorited(!isFavorited)}
                 className={isFavorited ? 'text-primary' : ''}
@@ -152,12 +135,12 @@ const PropertyDetails = () => {
 
       {/* Image Gallery */}
       <div className="relative h-96 md:h-[500px] overflow-hidden">
-        <img 
+        <img
           src={images[currentImageIndex]}
           alt={property.title}
           className="w-full h-full object-cover"
         />
-        
+
         {images.length > 1 && (
           <>
             <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
@@ -165,13 +148,12 @@ const PropertyDetails = () => {
                 <button
                   key={index}
                   onClick={() => setCurrentImageIndex(index)}
-                  className={`w-3 h-3 rounded-full ${
-                    index === currentImageIndex ? 'bg-primary' : 'bg-white/50'
-                  }`}
+                  className={`w-3 h-3 rounded-full ${index === currentImageIndex ? 'bg-primary' : 'bg-white/50'
+                    }`}
                 />
               ))}
             </div>
-            
+
             <div className="absolute top-4 right-4 bg-black/50 text-white px-3 py-1 rounded-full text-sm">
               {currentImageIndex + 1} / {images.length}
             </div>
@@ -179,7 +161,7 @@ const PropertyDetails = () => {
         )}
 
         <div className="absolute top-4 left-4 flex flex-col gap-2">
-          <Badge 
+          <Badge
             variant={property.transaction_type === 'venda' ? 'default' : 'secondary'}
             className="bg-primary/90 text-primary-foreground"
           >
@@ -216,7 +198,7 @@ const PropertyDetails = () => {
             <div className="bg-card p-6 rounded-2xl border border-border">
               <h3 className="font-semibold text-foreground mb-4">Detalhes do Imóvel</h3>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {property.bedrooms !== undefined && property.bedrooms > 0 && (
+                {property.bedrooms !== undefined && property.bedrooms !== null && property.bedrooms > 0 && (
                   <div className="flex items-center space-x-2">
                     <Bed className="w-5 h-5 text-primary" />
                     <div>
@@ -225,7 +207,7 @@ const PropertyDetails = () => {
                     </div>
                   </div>
                 )}
-                {property.bathrooms !== undefined && property.bathrooms > 0 && (
+                {property.bathrooms !== undefined && property.bathrooms !== null && property.bathrooms > 0 && (
                   <div className="flex items-center space-x-2">
                     <Bath className="w-5 h-5 text-primary" />
                     <div>
@@ -234,26 +216,26 @@ const PropertyDetails = () => {
                     </div>
                   </div>
                 )}
-                {property.garage_spaces !== undefined && property.garage_spaces > 0 && (
+                {property.parking_spots !== undefined && property.parking_spots !== null && property.parking_spots > 0 && (
                   <div className="flex items-center space-x-2">
                     <Car className="w-5 h-5 text-primary" />
                     <div>
-                      <div className="font-medium">{property.garage_spaces}</div>
+                      <div className="font-medium">{property.parking_spots}</div>
                       <div className="text-sm text-muted-foreground">Vagas</div>
                     </div>
                   </div>
                 )}
-                {property.area_size && (
+                {property.area_m2 && (
                   <div className="flex items-center space-x-2">
                     <Maximize className="w-5 h-5 text-primary" />
                     <div>
-                      <div className="font-medium">{property.area_size}m²</div>
+                      <div className="font-medium">{property.area_m2}m²</div>
                       <div className="text-sm text-muted-foreground">Área</div>
                     </div>
                   </div>
                 )}
               </div>
-              
+
               <div className="mt-4 pt-4 border-t border-border">
                 <div className="text-sm text-muted-foreground mb-1">Tipo</div>
                 <div className="font-medium">{getPropertyTypeLabel(property.property_type)}</div>
@@ -269,20 +251,6 @@ const PropertyDetails = () => {
                 </p>
               </div>
             )}
-
-            {/* Features */}
-            {property.features && property.features.length > 0 && (
-              <div className="bg-card p-6 rounded-2xl border border-border">
-                <h3 className="font-semibold text-foreground mb-4">Características</h3>
-                <div className="flex flex-wrap gap-2">
-                  {property.features.map((feature, index) => (
-                    <Badge key={index} variant="outline">
-                      {feature}
-                    </Badge>
-                  ))}
-                </div>
-              </div>
-            )}
           </div>
 
           {/* Sidebar */}
@@ -290,10 +258,10 @@ const PropertyDetails = () => {
             {/* Contact Card */}
             <div className="bg-card p-6 rounded-2xl border border-border sticky top-4">
               <div className="text-center mb-6">
-                <img 
+                <img
                   src="/src/assets/corretor-andrews.jpg"
                   alt="Andrews Franco"
-                  className="w-20 h-20 rounded-full mx-auto mb-4 object-cover"
+                  className="w-full max-w-[120px] h-32 rounded-full mx-auto mb-4 object-cover"
                 />
                 <h3 className="font-bold text-foreground">Andrews Franco</h3>
                 <p className="text-sm text-muted-foreground">Corretor de Imóveis</p>
@@ -301,18 +269,18 @@ const PropertyDetails = () => {
               </div>
 
               <div className="space-y-3">
-                <Button 
+                <Button
                   onClick={handleWhatsAppContact}
                   className="w-full bg-gradient-primary hover:shadow-glow transition-all duration-300"
                 >
                   <Phone className="w-4 h-4 mr-2" />
                   WhatsApp: (51) 98122-0279
                 </Button>
-                
+
                 <Button variant="outline" className="w-full">
                   Solicitar Visita
                 </Button>
-                
+
                 <Button variant="outline" className="w-full">
                   Mais Informações
                 </Button>

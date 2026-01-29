@@ -1,30 +1,12 @@
 import { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight, Filter, SortAsc } from "lucide-react";
+import { ChevronLeft, ChevronRight, Filter } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import PropertyCard from "./PropertyCard";
 import { supabase } from "@/integrations/supabase/client";
+import { Database } from "@/integrations/supabase/types";
 
-interface Property {
-  id: string;
-  title: string;
-  description?: string;
-  property_type: string;
-  transaction_type: string;
-  price_min?: number;
-  price_max?: number;
-  city: string;
-  neighborhood?: string;
-  bedrooms?: number;
-  bathrooms?: number;
-  garage_spaces?: number;
-  area_size?: number;
-  images?: string[];
-  features?: string[];
-  status: string;
-  featured: boolean;
-  created_at: string;
-}
+type Property = Database['public']['Tables']['properties']['Row'];
 
 const PropertyShowcase = () => {
   const [properties, setProperties] = useState<Property[]>([]);
@@ -53,7 +35,7 @@ const PropertyShowcase = () => {
       const { data, error } = await supabase
         .from('properties')
         .select('*')
-        .eq('status', 'disponivel')
+        .eq('active', true)
         .order('featured', { ascending: false })
         .order('created_at', { ascending: false });
 
@@ -81,7 +63,7 @@ const PropertyShowcase = () => {
 
     // Filtrar por cidade
     if (filters.city !== "all") {
-      filtered = filtered.filter(p => p.city.toLowerCase().includes(filters.city));
+      filtered = filtered.filter(p => p.city?.toLowerCase().includes(filters.city));
     }
 
     // Ordenar
@@ -162,7 +144,7 @@ const PropertyShowcase = () => {
             <span>Filtros:</span>
           </div>
 
-          <Select value={filters.transaction} onValueChange={(value) => setFilters(prev => ({...prev, transaction: value}))}>
+          <Select value={filters.transaction} onValueChange={(value) => setFilters(prev => ({ ...prev, transaction: value }))}>
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Transação" />
             </SelectTrigger>
@@ -173,7 +155,7 @@ const PropertyShowcase = () => {
             </SelectContent>
           </Select>
 
-          <Select value={filters.type} onValueChange={(value) => setFilters(prev => ({...prev, type: value}))}>
+          <Select value={filters.type} onValueChange={(value) => setFilters(prev => ({ ...prev, type: value }))}>
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Tipo" />
             </SelectTrigger>
@@ -187,7 +169,7 @@ const PropertyShowcase = () => {
             </SelectContent>
           </Select>
 
-          <Select value={filters.city} onValueChange={(value) => setFilters(prev => ({...prev, city: value}))}>
+          <Select value={filters.city} onValueChange={(value) => setFilters(prev => ({ ...prev, city: value }))}>
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Cidade" />
             </SelectTrigger>
@@ -200,7 +182,7 @@ const PropertyShowcase = () => {
             </SelectContent>
           </Select>
 
-          <Select value={filters.sortBy} onValueChange={(value) => setFilters(prev => ({...prev, sortBy: value}))}>
+          <Select value={filters.sortBy} onValueChange={(value) => setFilters(prev => ({ ...prev, sortBy: value }))}>
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Ordenar por" />
             </SelectTrigger>
