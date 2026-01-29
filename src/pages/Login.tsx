@@ -8,6 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
+import { supabase } from '@/integrations/supabase/client';
 import { Loader2, ArrowLeft } from 'lucide-react';
 
 const Login = () => {
@@ -33,13 +34,46 @@ const Login = () => {
     const { error } = await signIn(loginData.email, loginData.password);
     
     if (error) {
-      setError(error.message);
+      if (error.message.includes('Email not confirmed')) {
+        setError('Email não confirmado. Verifique sua caixa de entrada ou clique em "Reenviar email de confirmação".');
+      } else {
+        setError(error.message);
+      }
     } else {
       toast({
         title: "Login realizado com sucesso!",
         description: "Bem-vindo de volta.",
       });
       navigate('/admin');
+    }
+    
+    setIsLoading(false);
+  };
+
+  const handleResendConfirmation = async () => {
+    if (!loginData.email) {
+      setError('Por favor, insira seu email primeiro.');
+      return;
+    }
+    
+    setIsLoading(true);
+    setError('');
+    
+    const { error } = await supabase.auth.resend({
+      type: 'signup',
+      email: loginData.email,
+      options: {
+        emailRedirectTo: `${window.location.origin}/`,
+      }
+    });
+    
+    if (error) {
+      setError(error.message);
+    } else {
+      toast({
+        title: "Email reenviado!",
+        description: "Verifique sua caixa de entrada e spam para confirmar seu email.",
+      });
     }
     
     setIsLoading(false);
@@ -137,6 +171,16 @@ const Login = () => {
                   <Button type="submit" className="w-full" disabled={isLoading}>
                     {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                     Entrar
+                  </Button>
+
+                  <Button 
+                    type="button" 
+                    variant="outline" 
+                    className="w-full" 
+                    onClick={handleResendConfirmation}
+                    disabled={isLoading}
+                  >
+                    Reenviar email de confirmação
                   </Button>
                 </form>
               </TabsContent>
