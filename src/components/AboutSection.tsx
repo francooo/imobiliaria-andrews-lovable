@@ -58,14 +58,14 @@ const AboutSection = () => {
                 Sua jornada imobiliária começa aqui
               </h3>
               <p className="text-muted-foreground text-lg leading-relaxed mb-6">
-                Com mais de 2 anos de experiência no mercado imobiliário, dedico-me 
-                integralmente a ajudar pessoas a realizarem seus sonhos. Seja comprando 
-                sua primeira casa, investindo em um imóvel ou vendendo uma propriedade, 
+                Com mais de 2 anos de experiência no mercado imobiliário, dedico-me
+                integralmente a ajudar pessoas a realizarem seus sonhos. Seja comprando
+                sua primeira casa, investindo em um imóvel ou vendendo uma propriedade,
                 estou aqui para guiá-lo em cada etapa do processo.
               </p>
               <p className="text-muted-foreground text-lg leading-relaxed mb-6">
-                Minha missão é tornar a experiência imobiliária simples, transparente 
-                e bem-sucedida. Acredito que cada cliente é único e merece um atendimento 
+                Minha missão é tornar a experiência imobiliária simples, transparente
+                e bem-sucedida. Acredito que cada cliente é único e merece um atendimento
                 personalizado e de qualidade.
               </p>
             </div>
@@ -114,15 +114,13 @@ const AboutSection = () => {
             <div className="text-center">
               <div className="relative inline-block">
                 <div className="w-64 h-64 mx-auto rounded-full overflow-hidden border-4 border-primary/20 shadow-glow">
-                  <img 
-                    src={corretorAndrews} 
+                  <img
+                    src={corretorAndrews}
                     alt="Andrews Franco - Corretor de Imóveis"
                     className="w-full h-full object-cover"
                   />
                 </div>
-                <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 bg-gradient-primary text-primary-foreground px-4 py-2 rounded-full text-sm font-medium">
-                  CRECI: 123456
-                </div>
+
               </div>
             </div>
 
@@ -153,8 +151,8 @@ const AboutSection = () => {
             Minha Missão
           </h3>
           <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            "Transformar sonhos em realidade através do mercado imobiliário. 
-            Cada cliente é único e merece um atendimento excepcional, 
+            "Transformar sonhos em realidade através do mercado imobiliário.
+            Cada cliente é único e merece um atendimento excepcional,
             transparente e comprometido com os melhores resultados."
           </p>
           <div className="mt-6">
