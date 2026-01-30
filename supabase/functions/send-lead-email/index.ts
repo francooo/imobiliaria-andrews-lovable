@@ -5,7 +5,7 @@ const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
 interface LeadEmailRequest {
@@ -13,6 +13,8 @@ interface LeadEmailRequest {
   email: string;
   phone: string;
   message?: string;
+  cidade?: string;
+  estado?: string;
   source: string;
 }
 
@@ -22,15 +24,20 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
-    const { name, email, phone, message, source }: LeadEmailRequest = await req.json();
+    const { name, email, phone, message, cidade, estado, source }: LeadEmailRequest = await req.json();
 
-    console.log("Recebido novo lead:", { name, email, phone, source });
+    console.log("Recebido novo lead:", { name, email, phone, cidade, estado, source });
+
+    // Construir informação de localização
+    const locationInfo = cidade && estado 
+      ? `${cidade} - ${estado}` 
+      : cidade || estado || 'Não informado';
 
     // Email para o corretor (notificação de novo lead)
     const notificationResponse = await resend.emails.send({
       from: "Site Andrews Franco <onboarding@resend.dev>",
       to: ["andrewsfranco93@gmail.com"],
-      subject: `🏠 Novo Lead: ${name} - ${source === 'popup_home' ? 'Pop-up Home' : 'Formulário de Contato'}`,
+      subject: `🏠 Novo Lead: ${name}${cidade ? ` - ${cidade}` : ''} - ${source === 'popup_home' ? 'Pop-up Home' : 'Formulário de Contato'}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #1a1a1a; color: #fff; padding: 40px 20px; border-radius: 12px;">
           <div style="text-align: center; margin-bottom: 40px;">
@@ -56,6 +63,10 @@ const handler = async (req: Request): Promise<Response> => {
                 <td style="padding: 10px 0; color: #888;">Telefone:</td>
                 <td style="padding: 10px 0; color: #fff;"><a href="tel:${phone}" style="color: #FFC107;">${phone}</a></td>
               </tr>
+              <tr>
+                <td style="padding: 10px 0; color: #888;">📍 Cidade:</td>
+                <td style="padding: 10px 0; color: #fff; font-weight: bold;">${locationInfo}</td>
+              </tr>
             </table>
           </div>
           
@@ -66,8 +77,17 @@ const handler = async (req: Request): Promise<Response> => {
             </div>
           ` : ''}
           
+          ${cidade ? `
+            <div style="background: #252525; padding: 20px; border-radius: 12px; margin: 20px 0; border-left: 4px solid #2196F3; text-align: center;">
+              <p style="color: #2196F3; margin: 0; font-size: 14px;">
+                💡 <strong>Dica:</strong> Este lead está interessado em imóveis em <strong>${cidade}</strong>. 
+                Envie ofertas personalizadas para essa região!
+              </p>
+            </div>
+          ` : ''}
+          
           <div style="text-align: center; margin: 30px 0;">
-            <a href="https://api.whatsapp.com/send/?phone=55${phone.replace(/\D/g, '')}&text=${encodeURIComponent(`Olá ${name}! Vi que você demonstrou interesse em nossos imóveis. Como posso ajudá-lo?`)}" 
+            <a href="https://api.whatsapp.com/send/?phone=55${phone.replace(/\D/g, '')}&text=${encodeURIComponent(`Olá ${name}! Vi que você demonstrou interesse em nossos imóveis${cidade ? ` em ${cidade}` : ''}. Como posso ajudá-lo?`)}" 
                style="background: linear-gradient(135deg, #25D366, #128C7E); color: #fff; padding: 15px 30px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block; margin: 5px;">
               📱 Responder via WhatsApp
             </a>
@@ -107,7 +127,7 @@ const handler = async (req: Request): Promise<Response> => {
           
           <p style="font-size: 16px; line-height: 1.6; margin-bottom: 20px;">
             Obrigado pelo seu interesse em nossos serviços imobiliários! 
-            Recebemos suas informações e entraremos em contato em breve.
+            Recebemos suas informações e entraremos em contato em breve${cidade ? ` com as melhores opções em <strong>${cidade}</strong>` : ''}.
           </p>
           
           ${message ? `
@@ -122,6 +142,7 @@ const handler = async (req: Request): Promise<Response> => {
             <p><strong>Nome:</strong> ${name}</p>
             <p><strong>Email:</strong> ${email}</p>
             <p><strong>Telefone:</strong> ${phone}</p>
+            ${cidade ? `<p><strong>📍 Cidade:</strong> ${cidade}${estado ? ` - ${estado}` : ''}</p>` : ''}
           </div>
           
           <p style="font-size: 16px; line-height: 1.6;">
