@@ -156,7 +156,14 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_dashboard_stats: {
+        Args: never
+        Returns: {
+          active_properties: number
+          inactive_properties: number
+          total_properties: number
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never
