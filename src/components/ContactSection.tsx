@@ -6,22 +6,62 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import CepInput from "./CepInput";
+import AddressFields from "./AddressFields";
+import { type CepData, normalizeCidade } from "@/hooks/useCep";
 
 const ContactSection = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
-    message: ""
+    message: "",
+    cep: "",
+    logradouro: "",
+    bairro: "",
+    cidade: "",
+    estado: ""
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isAutoFilled, setIsAutoFilled] = useState(false);
+  const [cepError, setCepError] = useState<string | null>(null);
   const { toast } = useToast();
+
+  const handleAddressFound = (data: CepData) => {
+    setFormData(prev => ({
+      ...prev,
+      logradouro: data.logradouro,
+      bairro: data.bairro,
+      cidade: data.cidade,
+      estado: data.estado
+    }));
+    setIsAutoFilled(true);
+  };
+
+  const handleAddressChange = (field: string, value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+    setIsAutoFilled(false);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Validar CEP se preenchido
+    if (formData.cep && cepError) {
+      toast({
+        title: "CEP inválido",
+        description: "Por favor, corrija o CEP antes de enviar.",
+        variant: "destructive"
+      });
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
+      // Normalizar cidade para filtros
+      const cidadeNormalizada = formData.cidade ? normalizeCidade(formData.cidade) : null;
+
       // Inserir lead no banco
       const { error: insertError } = await supabase
         .from('leads')
@@ -29,10 +69,20 @@ const ContactSection = () => {
           name: formData.name,
           email: formData.email,
           phone: formData.phone,
+          cep: formData.cep || null,
+          logradouro: formData.logradouro || null,
+          bairro: formData.bairro || null,
+          cidade: cidadeNormalizada,
+          estado: formData.estado || null,
           source: 'contact_form'
         }]);
 
       if (insertError) throw insertError;
+
+      // Salvar cidade no localStorage para filtro de imóveis
+      if (cidadeNormalizada) {
+        localStorage.setItem('leadCidade', cidadeNormalizada);
+      }
 
       // Chamar edge function para enviar email
       const { error: emailError } = await supabase.functions.invoke('send-lead-email', {
@@ -41,6 +91,8 @@ const ContactSection = () => {
           email: formData.email,
           phone: formData.phone,
           message: formData.message,
+          cidade: formData.cidade,
+          estado: formData.estado,
           source: 'contact_form'
         }
       });
@@ -54,7 +106,11 @@ const ContactSection = () => {
         description: "Obrigado pelo contato. Retornaremos em breve!",
       });
 
-      setFormData({ name: "", email: "", phone: "", message: "" });
+      setFormData({ name: "", email: "", phone: "", message: "", cep: "", logradouro: "", bairro: "", cidade: "", estado: "" });
+      setIsAutoFilled(false);
+
+      // Disparar evento para atualizar filtros
+      window.dispatchEvent(new Event('leadCidadeChanged'));
 
     } catch (error) {
       console.error('Erro ao enviar mensagem:', error);
@@ -160,6 +216,33 @@ const ContactSection = () => {
                   className="h-12 bg-input border-border"
                   required
                 />
+
+                {/* CEP e Endereço */}
+                <div className="space-y-4 pt-4 border-t border-border">
+                  <p className="text-sm text-muted-foreground">
+                    Informe seu CEP para recomendarmos imóveis na sua região
+                  </p>
+                  
+                  <CepInput
+                    value={formData.cep}
+                    onChange={(cep) => setFormData(prev => ({ ...prev, cep }))}
+                    onAddressFound={handleAddressFound}
+                    onError={setCepError}
+                  />
+
+                  {(formData.cidade || formData.logradouro) && (
+                    <AddressFields
+                      data={{
+                        logradouro: formData.logradouro,
+                        bairro: formData.bairro,
+                        cidade: formData.cidade,
+                        estado: formData.estado
+                      }}
+                      onChange={handleAddressChange}
+                      isAutoFilled={isAutoFilled}
+                    />
+                  )}
+                </div>
                 
                 <Textarea
                   placeholder="Sua mensagem..."

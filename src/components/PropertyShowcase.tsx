@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight, Filter } from "lucide-react";
+import { ChevronLeft, ChevronRight, Filter, MapPin, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Badge } from "@/components/ui/badge";
 import PropertyCard from "./PropertyCard";
 import { supabase } from "@/integrations/supabase/client";
 import { Database } from "@/integrations/supabase/types";
+import { normalizeCidade } from "@/hooks/useCep";
 
 type Property = Database['public']['Tables']['properties']['Row'];
 
@@ -13,6 +15,8 @@ const PropertyShowcase = () => {
   const [filteredProperties, setFilteredProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
+  const [leadCidade, setLeadCidade] = useState<string | null>(null);
+  const [usingLeadFilter, setUsingLeadFilter] = useState(false);
   const [filters, setFilters] = useState({
     type: "all",
     city: "all",
@@ -24,11 +28,30 @@ const PropertyShowcase = () => {
 
   useEffect(() => {
     fetchProperties();
+    loadLeadCidade();
+
+    // Ouvir mudanças na cidade do lead
+    const handleLeadCidadeChanged = () => {
+      loadLeadCidade();
+    };
+    window.addEventListener('leadCidadeChanged', handleLeadCidadeChanged);
+
+    return () => {
+      window.removeEventListener('leadCidadeChanged', handleLeadCidadeChanged);
+    };
   }, []);
 
   useEffect(() => {
     applyFilters();
-  }, [properties, filters]);
+  }, [properties, filters, leadCidade, usingLeadFilter]);
+
+  const loadLeadCidade = () => {
+    const cidade = localStorage.getItem('leadCidade');
+    if (cidade) {
+      setLeadCidade(cidade);
+      setUsingLeadFilter(true);
+    }
+  };
 
   const fetchProperties = async () => {
     try {
@@ -51,6 +74,20 @@ const PropertyShowcase = () => {
   const applyFilters = () => {
     let filtered = [...properties];
 
+    // Primeiro, aplicar filtro da cidade do lead se ativo
+    if (usingLeadFilter && leadCidade && filters.city === "all") {
+      const cidadeNormalizada = leadCidade.toLowerCase();
+      const matchedInCity = filtered.filter(p => {
+        const propCidade = p.city ? normalizeCidade(p.city) : "";
+        return propCidade.includes(cidadeNormalizada) || cidadeNormalizada.includes(propCidade);
+      });
+      
+      // Se encontrou imóveis na cidade, usa eles; senão, mostra todos
+      if (matchedInCity.length > 0) {
+        filtered = matchedInCity;
+      }
+    }
+
     // Filtrar por tipo de transação
     if (filters.transaction !== "all") {
       filtered = filtered.filter(p => p.transaction_type === filters.transaction);
@@ -61,7 +98,7 @@ const PropertyShowcase = () => {
       filtered = filtered.filter(p => p.property_type === filters.type);
     }
 
-    // Filtrar por cidade
+    // Filtrar por cidade (seleção manual)
     if (filters.city !== "all") {
       filtered = filtered.filter(p => p.city?.toLowerCase().includes(filters.city));
     }
@@ -87,6 +124,12 @@ const PropertyShowcase = () => {
 
     setFilteredProperties(filtered);
     setCurrentPage(1);
+  };
+
+  const clearLeadFilter = () => {
+    localStorage.removeItem('leadCidade');
+    setLeadCidade(null);
+    setUsingLeadFilter(false);
   };
 
   const handleViewDetails = (property: Property) => {
@@ -136,6 +179,27 @@ const PropertyShowcase = () => {
             Conheça nossa seleção especial de imóveis com as melhores oportunidades do mercado
           </p>
         </div>
+
+        {/* Lead Location Filter Badge */}
+        {usingLeadFilter && leadCidade && filters.city === "all" && (
+          <div className="flex items-center justify-center mb-6">
+            <Badge 
+              variant="secondary" 
+              className="px-4 py-2 text-sm bg-primary/10 border border-primary/20 text-foreground"
+            >
+              <MapPin className="w-4 h-4 mr-2 text-primary" />
+              Mostrando imóveis em: <span className="font-semibold ml-1 capitalize">{leadCidade}</span>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="ml-2 h-5 w-5 p-0 hover:bg-destructive/20"
+                onClick={clearLeadFilter}
+              >
+                <X className="w-3 h-3" />
+              </Button>
+            </Badge>
+          </div>
+        )}
 
         {/* Filters */}
         <div className="flex flex-wrap gap-4 mb-8 bg-card p-6 rounded-2xl border border-border">

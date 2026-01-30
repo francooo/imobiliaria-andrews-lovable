@@ -16,9 +16,14 @@ export type Database = {
     Tables: {
       leads: {
         Row: {
+          bairro: string | null
+          cep: string | null
+          cidade: string | null
           created_at: string
           email: string
+          estado: string | null
           id: string
+          logradouro: string | null
           message: string | null
           name: string
           phone: string | null
@@ -26,9 +31,14 @@ export type Database = {
           source: string | null
         }
         Insert: {
+          bairro?: string | null
+          cep?: string | null
+          cidade?: string | null
           created_at?: string
           email: string
+          estado?: string | null
           id?: string
+          logradouro?: string | null
           message?: string | null
           name: string
           phone?: string | null
@@ -36,9 +46,14 @@ export type Database = {
           source?: string | null
         }
         Update: {
+          bairro?: string | null
+          cep?: string | null
+          cidade?: string | null
           created_at?: string
           email?: string
+          estado?: string | null
           id?: string
+          logradouro?: string | null
           message?: string | null
           name?: string
           phone?: string | null
