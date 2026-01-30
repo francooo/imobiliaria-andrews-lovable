@@ -9,7 +9,11 @@ interface DashboardStats {
     inactive_properties: number;
 }
 
-const DashboardSummary = () => {
+interface DashboardSummaryProps {
+    triggerUpdate?: number;
+}
+
+const DashboardSummary = ({ triggerUpdate = 0 }: DashboardSummaryProps) => {
     const [stats, setStats] = useState<DashboardStats>({
         total_properties: 0,
         active_properties: 0,
@@ -19,20 +23,27 @@ const DashboardSummary = () => {
 
     useEffect(() => {
         fetchStats();
-    }, []);
+    }, [triggerUpdate]);
 
     const fetchStats = async () => {
+        // in fetchStats
         try {
             const { data, error } = await supabase
                 .rpc('get_dashboard_stats');
 
-            if (error) throw error;
+            if (error) {
+                console.error("Erro RPC:", error);
+                throw error;
+            }
+
+            console.log("Dashboard Stats:", data);
 
             if (data && data.length > 0) {
                 setStats(data[0]);
             }
         } catch (error) {
             console.error("Erro ao buscar estatísticas:", error);
+            // toast here if imported
         } finally {
             setLoading(false);
         }

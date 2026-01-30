@@ -43,6 +43,7 @@ const AdminPanel = () => {
   };
 
   const [formData, setFormData] = useState(initialFormState);
+  const [statsTrigger, setStatsTrigger] = useState(0);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -119,6 +120,7 @@ const AdminPanel = () => {
 
       resetForm();
       fetchProperties();
+      setStatsTrigger(prev => prev + 1); // Trigger dashboard update
     } catch (error) {
       console.error('Erro ao salvar imóvel:', error);
       toast({
@@ -168,6 +170,7 @@ const AdminPanel = () => {
       });
 
       fetchProperties();
+      setStatsTrigger(prev => prev + 1); // Trigger dashboard update
     } catch (error) {
       console.error('Erro ao excluir imóvel:', error);
       toast({
@@ -197,7 +200,7 @@ const AdminPanel = () => {
       <AdminMenu />
 
       <div className="container mx-auto px-4 py-8">
-        <DashboardSummary />
+        <DashboardSummary triggerUpdate={statsTrigger} />
 
         <div className="flex items-center justify-between mb-8">
           <h2 className="text-2xl font-bold text-foreground">Gerenciar Imóveis</h2>

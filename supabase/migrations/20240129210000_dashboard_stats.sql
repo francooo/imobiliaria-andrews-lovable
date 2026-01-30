@@ -5,12 +5,14 @@ RETURNS TABLE (
   inactive_properties BIGINT
 ) 
 LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
 AS $$
 BEGIN
   RETURN QUERY
   SELECT
     (SELECT COUNT(*) FROM properties) as total_properties,
     (SELECT COUNT(*) FROM properties WHERE active = true) as active_properties,
-    (SELECT COUNT(*) FROM properties WHERE active = false) as inactive_properties;
+    (SELECT COUNT(*) FROM properties WHERE active IS NOT TRUE) as inactive_properties;
 END;
 $$;
