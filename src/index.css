@@ -104,6 +104,13 @@ All colors MUST be HSL.
   }
 }
 
+/* Custom breakpoint for extra small screens */
+@media (min-width: 360px) {
+  .xs\:block { display: block; }
+  .xs\:inline { display: inline; }
+  .xs\:text-3xl { font-size: 1.875rem; line-height: 2.25rem; }
+}
+
 @layer base {
   * {
     @apply border-border;
@@ -111,10 +118,23 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground font-sans antialiased;
+    -webkit-tap-highlight-color: transparent;
   }
 
   html {
     scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  /* Touch-friendly tap targets */
+  .touch-manipulation {
+    touch-action: manipulation;
+  }
+
+  /* Prevent text selection on buttons */
+  button, [role="button"] {
+    user-select: none;
+    -webkit-user-select: none;
   }
 }
 

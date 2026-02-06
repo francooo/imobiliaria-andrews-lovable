@@ -167,59 +167,75 @@ const ContactSection = () => {
   ];
 
   return (
-    <section id="contato" className="py-20 bg-gradient-card">
-      <div className="container mx-auto px-4">
+    <section id="contato" className="py-12 sm:py-16 md:py-20 bg-gradient-card" aria-label="Formulário de contato">
+      <div className="container mx-auto px-4 sm:px-6">
         {/* Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-foreground mb-4">
+        <header className="text-center mb-10 sm:mb-16">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-3 sm:mb-4">
             Entre em <span className="text-primary">Contato</span>
           </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
             Pronto para encontrar o imóvel dos seus sonhos? Entre em contato e 
             vamos começar essa jornada juntos!
           </p>
-        </div>
+        </header>
 
-        <div className="grid lg:grid-cols-2 gap-12">
+        <div className="grid lg:grid-cols-2 gap-8 sm:gap-12">
           {/* Contact Form */}
           <Card className="bg-card/50 backdrop-blur-sm border border-border shadow-elegant">
-            <CardContent className="p-8">
-              <h3 className="text-2xl font-bold text-foreground mb-6">
+            <CardContent className="p-4 sm:p-6 md:p-8">
+              <h3 className="text-xl sm:text-2xl font-bold text-foreground mb-4 sm:mb-6">
                 Envie uma Mensagem
               </h3>
               
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <Input
-                    type="text"
-                    placeholder="Seu nome"
-                    value={formData.name}
-                    onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                    className="h-12 bg-input border-border"
-                    required
-                  />
-                  <Input
-                    type="email"
-                    placeholder="Seu e-mail"
-                    value={formData.email}
-                    onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
-                    className="h-12 bg-input border-border"
-                    required
-                  />
+              <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                  <div>
+                    <label htmlFor="contact-name" className="sr-only">Seu nome</label>
+                    <Input
+                      id="contact-name"
+                      type="text"
+                      placeholder="Seu nome"
+                      value={formData.name}
+                      onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+                      className="h-11 sm:h-12 bg-input border-border text-sm sm:text-base touch-manipulation"
+                      required
+                      autoComplete="name"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="contact-email" className="sr-only">Seu e-mail</label>
+                    <Input
+                      id="contact-email"
+                      type="email"
+                      placeholder="Seu e-mail"
+                      value={formData.email}
+                      onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
+                      className="h-11 sm:h-12 bg-input border-border text-sm sm:text-base touch-manipulation"
+                      required
+                      autoComplete="email"
+                    />
+                  </div>
                 </div>
                 
-                <Input
-                  type="tel"
-                  placeholder="Seu telefone / WhatsApp"
-                  value={formData.phone}
-                  onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
-                  className="h-12 bg-input border-border"
-                  required
-                />
+                <div>
+                  <label htmlFor="contact-phone" className="sr-only">Seu telefone</label>
+                  <Input
+                    id="contact-phone"
+                    type="tel"
+                    inputMode="tel"
+                    placeholder="Seu telefone / WhatsApp"
+                    value={formData.phone}
+                    onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
+                    className="h-11 sm:h-12 bg-input border-border text-sm sm:text-base touch-manipulation"
+                    required
+                    autoComplete="tel"
+                  />
+                </div>
 
                 {/* CEP e Endereço */}
-                <div className="space-y-4 pt-4 border-t border-border">
-                  <p className="text-sm text-muted-foreground">
+                <div className="space-y-3 sm:space-y-4 pt-3 sm:pt-4 border-t border-border">
+                  <p className="text-xs sm:text-sm text-muted-foreground">
                     Informe seu CEP para recomendarmos imóveis na sua região
                   </p>
                   
@@ -244,18 +260,22 @@ const ContactSection = () => {
                   )}
                 </div>
                 
-                <Textarea
-                  placeholder="Sua mensagem..."
-                  value={formData.message}
-                  onChange={(e) => setFormData(prev => ({ ...prev, message: e.target.value }))}
-                  className="min-h-[120px] bg-input border-border resize-none"
-                  required
-                />
+                <div>
+                  <label htmlFor="contact-message" className="sr-only">Sua mensagem</label>
+                  <Textarea
+                    id="contact-message"
+                    placeholder="Sua mensagem..."
+                    value={formData.message}
+                    onChange={(e) => setFormData(prev => ({ ...prev, message: e.target.value }))}
+                    className="min-h-[100px] sm:min-h-[120px] bg-input border-border resize-none text-sm sm:text-base touch-manipulation"
+                    required
+                  />
+                </div>
                 
                 <Button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full h-12 bg-gradient-primary hover:shadow-glow transition-all duration-300 text-lg font-semibold"
+                  className="w-full h-11 sm:h-12 bg-gradient-primary hover:shadow-glow transition-all duration-300 text-base sm:text-lg font-semibold touch-manipulation"
                 >
                   {isSubmitting ? "Enviando..." : (
                     <>
@@ -269,29 +289,32 @@ const ContactSection = () => {
           </Card>
 
           {/* Contact Info */}
-          <div className="space-y-8">
+          <div className="space-y-6 sm:space-y-8">
             <div>
-              <h3 className="text-2xl font-bold text-foreground mb-6">
+              <h3 className="text-xl sm:text-2xl font-bold text-foreground mb-4 sm:mb-6">
                 Informações de Contato
               </h3>
               
-              <div className="space-y-4">
+              <div className="space-y-3 sm:space-y-4">
                 {contactInfo.map((info, index) => (
                   <Card 
                     key={index} 
-                    className="bg-card/30 border border-border hover:bg-card/50 transition-all duration-300 cursor-pointer"
-                    onClick={info.action}
+                    className="bg-card/30 border border-border hover:bg-card/50 transition-all duration-300 cursor-pointer focus-within:ring-2 focus-within:ring-primary"
                   >
-                    <CardContent className="p-4">
-                      <div className="flex items-center space-x-4">
-                        <div className="w-12 h-12 bg-gradient-primary rounded-full flex items-center justify-center flex-shrink-0">
-                          <info.icon className="w-6 h-6 text-primary-foreground" />
+                    <CardContent className="p-0">
+                      <button
+                        onClick={info.action}
+                        className="w-full p-4 flex items-center space-x-3 sm:space-x-4 min-h-[64px] touch-manipulation text-left"
+                        aria-label={`${info.title}: ${info.content}`}
+                      >
+                        <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-primary rounded-full flex items-center justify-center flex-shrink-0">
+                          <info.icon className="w-5 h-5 sm:w-6 sm:h-6 text-primary-foreground" />
                         </div>
-                        <div>
-                          <h4 className="font-semibold text-foreground">{info.title}</h4>
-                          <p className="text-muted-foreground">{info.content}</p>
+                        <div className="min-w-0">
+                          <h4 className="font-semibold text-foreground text-sm sm:text-base">{info.title}</h4>
+                          <p className="text-muted-foreground text-xs sm:text-sm truncate">{info.content}</p>
                         </div>
-                      </div>
+                      </button>
                     </CardContent>
                   </Card>
                 ))}
@@ -300,17 +323,18 @@ const ContactSection = () => {
 
             {/* Social Links */}
             <div>
-              <h4 className="text-xl font-semibold text-foreground mb-4">
+              <h4 className="text-lg sm:text-xl font-semibold text-foreground mb-3 sm:mb-4">
                 Redes Sociais
               </h4>
-              <div className="flex space-x-4">
+              <div className="flex space-x-3 sm:space-x-4">
                 {socialLinks.map((social, index) => (
                   <Button
                     key={index}
                     variant="outline"
                     size="icon"
-                    className={`w-12 h-12 rounded-full border-border ${social.color} transition-all duration-300 hover:shadow-glow`}
+                    className={`w-11 h-11 sm:w-12 sm:h-12 min-w-[44px] min-h-[44px] rounded-full border-border ${social.color} transition-all duration-300 hover:shadow-glow touch-manipulation`}
                     onClick={() => window.open(social.url, "_blank")}
+                    aria-label={`Abrir ${social.name}`}
                   >
                     <social.icon className="w-5 h-5" />
                   </Button>
@@ -320,11 +344,11 @@ const ContactSection = () => {
 
             {/* CTA Card */}
             <Card className="bg-gradient-primary/10 border border-primary/20">
-              <CardContent className="p-6 text-center">
-                <h4 className="text-xl font-bold text-foreground mb-2">
+              <CardContent className="p-4 sm:p-6 text-center">
+                <h4 className="text-lg sm:text-xl font-bold text-foreground mb-2">
                   Atendimento Personalizado
                 </h4>
-                <p className="text-muted-foreground mb-4">
+                <p className="text-muted-foreground text-sm sm:text-base mb-3 sm:mb-4 leading-relaxed">
                   Fale diretamente comigo pelo WhatsApp e receba atendimento 
                   imediato e personalizado.
                 </p>
@@ -333,7 +357,8 @@ const ContactSection = () => {
                     const message = "Olá Andrews! Gostaria de conversar sobre imóveis.";
                     window.open(`https://api.whatsapp.com/send/?phone=5551981220279&text=${encodeURIComponent(message)}&type=phone_number&app_absent=0`, '_blank');
                   }}
-                  className="bg-gradient-primary hover:shadow-glow transition-all duration-300"
+                  className="bg-gradient-primary hover:shadow-glow transition-all duration-300 h-11 sm:h-12 text-sm sm:text-base touch-manipulation"
+                  aria-label="Falar no WhatsApp"
                 >
                   <MessageCircle className="w-5 h-5 mr-2" />
                   Falar no WhatsApp

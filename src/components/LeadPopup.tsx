@@ -132,62 +132,77 @@ const LeadPopup = ({ isOpen, onClose }: LeadPopupProps) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md mx-4 bg-gradient-card border border-border shadow-elegant max-h-[90vh] overflow-y-auto">
+      <DialogContent 
+        className="w-[calc(100%-2rem)] max-w-md mx-auto bg-gradient-card border border-border shadow-elegant max-h-[90vh] overflow-y-auto rounded-xl sm:rounded-2xl p-4 sm:p-6"
+        aria-labelledby="lead-popup-title"
+        aria-describedby="lead-popup-description"
+      >
         <div className="relative">
           {/* Header */}
-          <div className="text-center mb-6">
-            <div className="w-16 h-16 bg-gradient-primary rounded-full flex items-center justify-center mx-auto mb-4">
-              <Mail className="w-8 h-8 text-primary-foreground" />
+          <header className="text-center mb-4 sm:mb-6">
+            <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-primary rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+              <Mail className="w-6 h-6 sm:w-8 sm:h-8 text-primary-foreground" />
             </div>
-            <h2 className="text-2xl font-bold text-foreground mb-2">
+            <h2 id="lead-popup-title" className="text-xl sm:text-2xl font-bold text-foreground mb-2">
               Encontre seu imóvel ideal!
             </h2>
-            <p className="text-muted-foreground text-sm">
+            <p id="lead-popup-description" className="text-muted-foreground text-xs sm:text-sm">
               Deixe seus dados e receba imóveis na sua região
             </p>
-          </div>
+          </header>
 
           {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
             <div className="relative">
-              <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+              <label htmlFor="lead-name" className="sr-only">Nome completo</label>
+              <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground" aria-hidden="true" />
               <Input
+                id="lead-name"
                 type="text"
                 placeholder="Seu nome completo"
                 value={formData.name}
                 onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                className="pl-10 h-12 bg-input border-border"
+                className="pl-9 sm:pl-10 h-11 sm:h-12 bg-input border-border text-sm sm:text-base touch-manipulation"
                 required
+                autoComplete="name"
               />
             </div>
 
             <div className="relative">
-              <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+              <label htmlFor="lead-email" className="sr-only">E-mail</label>
+              <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground" aria-hidden="true" />
               <Input
+                id="lead-email"
                 type="email"
+                inputMode="email"
                 placeholder="Seu melhor e-mail"
                 value={formData.email}
                 onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
-                className="pl-10 h-12 bg-input border-border"
+                className="pl-9 sm:pl-10 h-11 sm:h-12 bg-input border-border text-sm sm:text-base touch-manipulation"
                 required
+                autoComplete="email"
               />
             </div>
 
             <div className="relative">
-              <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+              <label htmlFor="lead-phone" className="sr-only">WhatsApp</label>
+              <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground" aria-hidden="true" />
               <Input
+                id="lead-phone"
                 type="tel"
+                inputMode="tel"
                 placeholder="Seu WhatsApp"
                 value={formData.phone}
                 onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
-                className="pl-10 h-12 bg-input border-border"
+                className="pl-9 sm:pl-10 h-11 sm:h-12 bg-input border-border text-sm sm:text-base touch-manipulation"
                 required
+                autoComplete="tel"
               />
             </div>
 
             {/* CEP e Endereço */}
-            <div className="pt-2 border-t border-border">
-              <p className="text-xs text-muted-foreground mb-3">
+            <div className="pt-2 sm:pt-3 border-t border-border">
+              <p className="text-[10px] sm:text-xs text-muted-foreground mb-2 sm:mb-3">
                 Informe seu CEP para ver imóveis na sua região
               </p>
               
@@ -199,7 +214,7 @@ const LeadPopup = ({ isOpen, onClose }: LeadPopupProps) => {
               />
 
               {(formData.cidade || formData.logradouro) && (
-                <div className="mt-3">
+                <div className="mt-2 sm:mt-3">
                   <AddressFields
                     data={{
                       logradouro: formData.logradouro,
@@ -218,18 +233,18 @@ const LeadPopup = ({ isOpen, onClose }: LeadPopupProps) => {
             <Button
               type="submit"
               disabled={isSubmitting}
-              className="w-full h-12 bg-gradient-primary hover:shadow-glow transition-all duration-300 text-lg font-semibold"
+              className="w-full h-11 sm:h-12 bg-gradient-primary hover:shadow-glow transition-all duration-300 text-sm sm:text-lg font-semibold touch-manipulation"
             >
               {isSubmitting ? "Enviando..." : "Quero Receber as Ofertas!"}
             </Button>
           </form>
 
           {/* Footer */}
-          <div className="text-center mt-4">
-            <p className="text-xs text-muted-foreground">
+          <footer className="text-center mt-3 sm:mt-4">
+            <p className="text-[10px] sm:text-xs text-muted-foreground">
               🔒 Seus dados estão seguros e não serão compartilhados
             </p>
-          </div>
+          </footer>
         </div>
       </DialogContent>
     </Dialog>
