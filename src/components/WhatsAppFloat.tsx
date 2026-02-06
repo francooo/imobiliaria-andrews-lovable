@@ -7,11 +7,11 @@ const WhatsAppFloat = () => {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-50">
+    <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50">
       <Button
         onClick={handleWhatsAppClick}
         size="lg"
-        className="w-14 h-14 rounded-full bg-green-500 hover:bg-green-600 text-white shadow-lg hover:shadow-xl transition-all duration-300 animate-pulse hover:animate-none hover:scale-110"
+        className="w-14 h-14 min-w-[56px] min-h-[56px] rounded-full bg-green-500 hover:bg-green-600 text-white shadow-lg hover:shadow-xl transition-all duration-300 animate-pulse hover:animate-none hover:scale-110 touch-manipulation"
         aria-label="Falar no WhatsApp"
       >
         <MessageCircle className="w-6 h-6" />
