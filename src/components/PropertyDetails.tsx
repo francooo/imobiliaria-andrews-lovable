@@ -260,10 +260,10 @@ const PropertyDetails = () => {
               <div className="text-center mb-6">
                 <img
                   src="/src/assets/corretor-andrews.jpg"
-                  alt="Andrews Franco"
+                  alt="AF Negócios Imobiliários"
                   className="w-full max-w-[120px] h-32 rounded-full mx-auto mb-4 object-cover"
                 />
-                <h3 className="font-bold text-foreground">Andrews Franco</h3>
+                <h3 className="font-bold text-foreground">AF Negócios Imobiliários</h3>
                 <p className="text-sm text-muted-foreground">Corretor de Imóveis</p>
                 <p className="text-sm text-muted-foreground">CRECI: 123456</p>
               </div>

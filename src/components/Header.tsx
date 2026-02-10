@@ -53,7 +53,7 @@ const Header = () => {
                 AF Negócios Imobiliários
               </h1>
               <p className="text-[10px] sm:text-xs text-muted-foreground hidden xs:block truncate">
-                Corretor de Imóveis
+                Negócios Imobiliários
               </p>
             </div>
           </a>

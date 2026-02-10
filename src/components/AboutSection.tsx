@@ -158,7 +158,7 @@ const AboutSection = () => {
             transparente e comprometido com os melhores resultados."
           </blockquote>
           <footer className="mt-4 sm:mt-6">
-            <cite className="text-primary font-semibold text-base sm:text-lg not-italic">— Andrews Franco</cite>
+            <cite className="text-primary font-semibold text-base sm:text-lg not-italic">— AF Negócios Imobiliários</cite>
           </footer>
         </div>
       </div>

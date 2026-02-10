@@ -160,7 +160,7 @@ const handler = async (req: Request): Promise<Response> => {
           <hr style="border: none; height: 1px; background: #333; margin: 30px 0;">
           
           <p style="text-align: center; color: #666; font-size: 14px;">
-            <strong>Andrews Franco - Corretor de Imóveis</strong><br>
+            <strong>AF Negócios Imobiliários</strong><br>
             2+ anos de experiência | 60+ imóveis vendidos e alugados<br>
             📞 51981220279 | 📧 andrews@corretorandrews.com.br
           </p>

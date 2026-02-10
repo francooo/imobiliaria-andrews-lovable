@@ -88,7 +88,7 @@ const handler = async (req: Request): Promise<Response> => {
             <!-- Footer -->
             <div style="background-color: #f9fafb; padding: 20px; text-align: center; border-top: 1px solid #e5e7eb;">
               <p style="color: #6b7280; font-size: 14px; margin: 0;">
-                Andrews Franco Imóveis - Realizando sonhos, construindo futuros
+                AF Negócios Imobiliários - Realizando sonhos, construindo futuros
               </p>
               <p style="color: #9ca3af; font-size: 12px; margin: 10px 0 0 0;">
                 Este email foi enviado automaticamente. Por favor, não responda.
