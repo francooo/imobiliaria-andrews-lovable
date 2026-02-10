@@ -155,13 +155,13 @@ const ContactSection = () => {
     {
       icon: Instagram,
       name: "Instagram",
-      url: "https://instagram.com/andrewsfrancoimoveis",
+      url: "https://www.instagram.com/andrews.franco/",
       color: "hover:text-pink-500"
     },
     {
       icon: Facebook,
       name: "Facebook",
-      url: "https://facebook.com/andrewsfrancoimoveis",
+      url: "https://www.facebook.com/andrews.franco93/",
       color: "hover:text-blue-500"
     }
   ];
