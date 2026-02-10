@@ -26,7 +26,7 @@ const handler = async (req: Request): Promise<Response> => {
     console.log(`Sending confirmation email to: ${email} for user: ${name}`);
 
     const emailResponse = await resend.emails.send({
-      from: "Andrews Franco Imóveis <onboarding@resend.dev>",
+      from: "AF Negócios Imobiliários <onboarding@resend.dev>",
       to: [email],
       subject: "Bem-vindo ao Andrews Franco Imóveis!",
       html: `
