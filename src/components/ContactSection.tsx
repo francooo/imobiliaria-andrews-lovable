@@ -161,7 +161,7 @@ const ContactSection = () => {
     {
       icon: Facebook,
       name: "Facebook",
-      url: "https://facebook.com/andrewsfrancoimoveis",
+      url: "https://www.facebook.com/andrews.franco93/",
       color: "hover:text-blue-500"
     }
   ];
