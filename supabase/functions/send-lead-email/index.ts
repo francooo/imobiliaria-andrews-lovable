@@ -120,7 +120,7 @@ const handler = async (req: Request): Promise<Response> => {
             <div style="background: linear-gradient(135deg, #FFC107, #FF8F00); width: 80px; height: 80px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 20px;">
               <span style="color: #000; font-size: 24px; font-weight: bold;">AF</span>
             </div>
-            <h1 style="color: #FFC107; margin: 0;">Corretor Andrews Franco</h1>
+            <h1 style="color: #FFC107; margin: 0;">AF Negócios Imobiliários</h1>
           </div>
           
           <h2 style="color: #FFC107;">Olá, ${name}!</h2>
