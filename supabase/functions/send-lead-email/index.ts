@@ -111,9 +111,9 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Email de confirmação para o lead
     const confirmationResponse = await resend.emails.send({
-      from: "Andrews Franco <onboarding@resend.dev>",
+      from: "AF Negócios Imobiliários <onboarding@resend.dev>",
       to: [email],
-      subject: "Obrigado pelo seu interesse - Corretor Andrews Franco",
+      subject: "Obrigado pelo seu interesse - AF Negócios Imobiliários",
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #000; color: #fff; padding: 40px 20px;">
           <div style="text-align: center; margin-bottom: 40px;">
