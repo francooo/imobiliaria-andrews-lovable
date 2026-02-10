@@ -91,7 +91,7 @@ const handler = async (req: Request): Promise<Response> => {
                style="background: linear-gradient(135deg, #25D366, #128C7E); color: #fff; padding: 15px 30px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block; margin: 5px;">
               📱 Responder via WhatsApp
             </a>
-            <a href="mailto:${email}?subject=Re: Interesse em Imóveis - Corretor Andrews Franco" 
+            <a href="mailto:${email}?subject=Re: Interesse em Imóveis - AF Negócios Imobiliários" 
                style="background: linear-gradient(135deg, #FFC107, #FF8F00); color: #000; padding: 15px 30px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block; margin: 5px;">
               ✉️ Responder via Email
             </a>
