@@ -118,7 +118,7 @@ const AboutSection = () => {
                 <div className="w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 mx-auto rounded-full overflow-hidden border-4 border-primary/20 shadow-glow">
                   <img
                     src={corretorAndrews}
-                    alt="Andrews Franco - Corretor de Imóveis"
+                    alt="AF Negócios Imobiliários"
                     className="w-full h-full object-cover"
                     loading="lazy"
                   />
