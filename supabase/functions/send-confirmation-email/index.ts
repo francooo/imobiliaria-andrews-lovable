@@ -28,7 +28,7 @@ const handler = async (req: Request): Promise<Response> => {
     const emailResponse = await resend.emails.send({
       from: "AF Negócios Imobiliários <onboarding@resend.dev>",
       to: [email],
-      subject: "Bem-vindo ao Andrews Franco Imóveis!",
+      subject: "Bem-vindo ao AF Negócios Imobiliários!",
       html: `
         <!DOCTYPE html>
         <html lang="pt-BR">
