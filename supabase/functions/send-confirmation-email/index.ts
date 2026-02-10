@@ -43,7 +43,7 @@ const handler = async (req: Request): Promise<Response> => {
             <!-- Header -->
             <div style="background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%); padding: 30px 20px; text-align: center;">
               <h1 style="color: #fbbf24; margin: 0; font-size: 28px; font-weight: bold;">
-                Andrews Franco Imóveis
+                AF Negócios Imobiliários
               </h1>
               <p style="color: #ffffff; margin: 10px 0 0 0; font-size: 16px;">
                 Seu parceiro ideal em imóveis
