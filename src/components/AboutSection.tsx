@@ -37,7 +37,7 @@ const AboutSection = () => {
   ];
 
   return (
-    <section id="sobre" className="py-12 sm:py-16 md:py-20 bg-background" aria-label="Sobre Andrews Franco">
+    <section id="sobre" className="py-12 sm:py-16 md:py-20 bg-background" aria-label="Sobre AF Negócios Imobiliários">
       <div className="container mx-auto px-4 sm:px-6">
         {/* Header */}
         <header className="text-center mb-10 sm:mb-16">
