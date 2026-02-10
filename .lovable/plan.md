@@ -1,78 +1,46 @@
 
-# Plano de Correção: Upload de Imagens no Painel Admin
 
-## Problema Identificado
+## Renomear "Andrews Franco" para "AF Negocios Imobiliarios"
 
-O erro de upload de imagens ocorre porque **o bucket de storage `property-images` não existe** no Supabase. O componente `ImageUpload.tsx` tenta fazer upload para esse bucket (linha 26), mas ele nunca foi criado.
+Substituicao do nome "Andrews Franco" por "AF Negocios Imobiliarios" em todos os arquivos do projeto.
 
-## Solução
+### Arquivos e alteracoes
 
-Criar o bucket de storage `property-images` com as políticas de acesso (RLS) corretas para permitir:
-- Upload de imagens por usuários autenticados (administradores)
-- Visualização pública das imagens (para exibir no site)
+**1. `index.html`** (meta tags e SEO)
+- Title, description, og:title, og:description, author
 
----
+**2. `src/components/Header.tsx`**
+- aria-label do logo
+- Texto `<h1>` do nome no header
 
-## Etapas de Implementação
+**3. `src/components/AboutSection.tsx`**
+- aria-label da section
+- Titulo "Sobre ..."
+- Alt da imagem
+- Citacao "-- Andrews Franco"
 
-### 1. Criar Bucket de Storage
+**4. `src/components/PropertyDetails.tsx`**
+- Alt da imagem do corretor
+- Nome exibido no card do corretor
 
-Executar uma migração SQL para criar o bucket `property-images` como público (para permitir visualização das imagens no site).
+**5. `src/index.css`**
+- Comentario de referencia ao tema
 
-```text
-+---------------------------+
-|  storage.buckets          |
-+---------------------------+
-| id: property-images       |
-| name: property-images     |
-| public: true              |
-+---------------------------+
-```
+**6. `supabase/functions/send-lead-email/index.ts`**
+- Campo "from" do email de notificacao
+- Texto no corpo do email de confirmacao (titulo, assinatura, rodape)
 
-### 2. Configurar Políticas de Acesso (RLS)
+**7. `supabase/functions/send-confirmation-email/index.ts`**
+- Campo "from"
+- Subject
+- Titulo no header do email
+- Texto no footer do email
 
-Criar as seguintes políticas no bucket:
+### Detalhes tecnicos
 
-| Operacao | Quem pode executar | Descricao |
-|----------|-------------------|-----------|
-| SELECT (visualizar) | Todos (anon) | Imagens publicas para exibicao no site |
-| INSERT (upload) | Usuarios autenticados | Apenas admins podem fazer upload |
-| UPDATE (atualizar) | Usuarios autenticados | Apenas admins podem atualizar |
-| DELETE (excluir) | Usuarios autenticados | Apenas admins podem excluir |
+- Todas as ocorrencias de "Andrews Franco" serao substituidas por "AF Negocios Imobiliarios"
+- Variantes como "Andrews Franco Imoveis" passam a "AF Negocios Imobiliarios"
+- "Corretor Andrews Franco" passa a "AF Negocios Imobiliarios"
+- As Edge Functions `send-lead-email` e `send-confirmation-email` serao reimplantadas apos a alteracao
+- O logotipo "AF" no header permanece inalterado, pois ja corresponde a sigla
 
-### 3. Melhorar Tratamento de Erros
-
-Atualizar o componente `ImageUpload.tsx` para mostrar mensagens de erro mais detalhadas, facilitando a identificacao de problemas futuros.
-
----
-
-## Detalhes Tecnicos
-
-### SQL da Migracao
-
-A migracao criara:
-
-1. **Bucket de storage**:
-   - Nome: `property-images`
-   - Tipo: Publico (para visualizacao)
-
-2. **Politicas RLS para `storage.objects`**:
-   - Politica de leitura publica para o bucket
-   - Politica de insercao para usuarios autenticados
-   - Politica de atualizacao para usuarios autenticados
-   - Politica de exclusao para usuarios autenticados
-
-### Arquivos a Modificar
-
-1. **Nova migracao SQL** - Criar bucket e politicas
-2. **`src/components/ImageUpload.tsx`** - Melhorar logs e mensagens de erro
-
----
-
-## Resultado Esperado
-
-Apos a implementacao:
-- O upload de imagens funcionara corretamente no painel admin
-- As imagens serao armazenadas no Supabase Storage
-- As URLs publicas serao salvas no banco de dados
-- As imagens poderao ser visualizadas publicamente no site
