@@ -50,7 +50,7 @@ const Header = () => {
             </div>
             <div className="min-w-0">
               <h1 className="text-base sm:text-xl font-bold text-foreground truncate">
-                Andrews Franco
+                AF Negócios Imobiliários
               </h1>
               <p className="text-[10px] sm:text-xs text-muted-foreground hidden xs:block truncate">
                 Corretor de Imóveis
