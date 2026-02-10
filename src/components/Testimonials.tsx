@@ -181,7 +181,7 @@ const Testimonials = () => {
         {/* Stats */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 mt-10 sm:mt-16 max-w-3xl mx-auto">
           {[
-            { value: "60+", label: "Imóveis Vendidos" },
+            { value: "30+", label: "Imóveis Vendidos" },
             { value: "98%", label: "Satisfação" },
             { value: "2+", label: "Anos de Experiência" },
             { value: "24h", label: "Suporte" },

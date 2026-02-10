@@ -7,8 +7,8 @@ const AboutSection = () => {
   const achievements = [
     {
       icon: TrendingUp,
-      title: "60+ Imóveis Vendidos e Alugados",
-      description: "Mais de 60 famílias realizaram o sonho da casa própria"
+      title: "30+ Imóveis Vendidos e Alugados",
+      description: "Mais de 30 famílias realizaram o sonho da casa própria"
     },
     {
       icon: Award,

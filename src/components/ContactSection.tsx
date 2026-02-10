@@ -134,8 +134,8 @@ const ContactSection = () => {
     {
       icon: Mail,
       title: "E-mail",
-      content: "andrews@corretorandrews.com.br",
-      action: () => window.open("mailto:andrews@corretorandrews.com.br", "_blank")
+      content: "andrewsfranco93@gmail.com",
+      action: () => window.open("mailto:andrewsfranco93@gmail.com", "_blank")
     },
     {
       icon: MapPin,
