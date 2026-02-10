@@ -37,12 +37,12 @@ const AboutSection = () => {
   ];
 
   return (
-    <section id="sobre" className="py-12 sm:py-16 md:py-20 bg-background" aria-label="Sobre Andrews Franco">
+    <section id="sobre" className="py-12 sm:py-16 md:py-20 bg-background" aria-label="Sobre AF Negócios Imobiliários">
       <div className="container mx-auto px-4 sm:px-6">
         {/* Header */}
         <header className="text-center mb-10 sm:mb-16">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-3 sm:mb-4">
-            Sobre <span className="text-primary">Andrews Franco</span>
+            Sobre <span className="text-primary">AF Negócios Imobiliários</span>
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
             Corretor de imóveis especialista com mais de 2 anos de experiência no mercado.
@@ -118,7 +118,7 @@ const AboutSection = () => {
                 <div className="w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 mx-auto rounded-full overflow-hidden border-4 border-primary/20 shadow-glow">
                   <img
                     src={corretorAndrews}
-                    alt="Andrews Franco - Corretor de Imóveis"
+                    alt="AF Negócios Imobiliários"
                     className="w-full h-full object-cover"
                     loading="lazy"
                   />
@@ -158,7 +158,7 @@ const AboutSection = () => {
             transparente e comprometido com os melhores resultados."
           </blockquote>
           <footer className="mt-4 sm:mt-6">
-            <cite className="text-primary font-semibold text-base sm:text-lg not-italic">— Andrews Franco</cite>
+            <cite className="text-primary font-semibold text-base sm:text-lg not-italic">— AF Negócios Imobiliários</cite>
           </footer>
         </div>
       </div>

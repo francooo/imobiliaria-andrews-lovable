@@ -26,9 +26,9 @@ const handler = async (req: Request): Promise<Response> => {
     console.log(`Sending confirmation email to: ${email} for user: ${name}`);
 
     const emailResponse = await resend.emails.send({
-      from: "Andrews Franco Imóveis <onboarding@resend.dev>",
+      from: "AF Negócios Imobiliários <onboarding@resend.dev>",
       to: [email],
-      subject: "Bem-vindo ao Andrews Franco Imóveis!",
+      subject: "Bem-vindo ao AF Negócios Imobiliários!",
       html: `
         <!DOCTYPE html>
         <html lang="pt-BR">
@@ -43,7 +43,7 @@ const handler = async (req: Request): Promise<Response> => {
             <!-- Header -->
             <div style="background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%); padding: 30px 20px; text-align: center;">
               <h1 style="color: #fbbf24; margin: 0; font-size: 28px; font-weight: bold;">
-                Andrews Franco Imóveis
+                AF Negócios Imobiliários
               </h1>
               <p style="color: #ffffff; margin: 10px 0 0 0; font-size: 16px;">
                 Seu parceiro ideal em imóveis
@@ -88,7 +88,7 @@ const handler = async (req: Request): Promise<Response> => {
             <!-- Footer -->
             <div style="background-color: #f9fafb; padding: 20px; text-align: center; border-top: 1px solid #e5e7eb;">
               <p style="color: #6b7280; font-size: 14px; margin: 0;">
-                Andrews Franco Imóveis - Realizando sonhos, construindo futuros
+                AF Negócios Imobiliários - Realizando sonhos, construindo futuros
               </p>
               <p style="color: #9ca3af; font-size: 12px; margin: 10px 0 0 0;">
                 Este email foi enviado automaticamente. Por favor, não responda.

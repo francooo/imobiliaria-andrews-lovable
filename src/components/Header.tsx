@@ -43,17 +43,17 @@ const Header = () => {
               scrollToSection("inicio");
             }}
             className="flex items-center space-x-2 sm:space-x-3 min-h-[44px] touch-manipulation"
-            aria-label="Corretor Andrews Franco - Início"
+            aria-label="AF Negócios Imobiliários - Início"
           >
             <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-primary rounded-lg flex items-center justify-center flex-shrink-0">
               <span className="text-primary-foreground font-bold text-lg sm:text-xl">AF</span>
             </div>
             <div className="min-w-0">
               <h1 className="text-base sm:text-xl font-bold text-foreground truncate">
-                Andrews Franco
+                AF Negócios Imobiliários
               </h1>
               <p className="text-[10px] sm:text-xs text-muted-foreground hidden xs:block truncate">
-                Corretor de Imóveis
+                Negócios Imobiliários
               </p>
             </div>
           </a>

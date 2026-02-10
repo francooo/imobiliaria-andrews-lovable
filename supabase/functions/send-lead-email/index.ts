@@ -35,7 +35,7 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Email para o corretor (notificação de novo lead)
     const notificationResponse = await resend.emails.send({
-      from: "Site Andrews Franco <onboarding@resend.dev>",
+      from: "AF Negócios Imobiliários <onboarding@resend.dev>",
       to: ["andrewsfranco93@gmail.com"],
       subject: `🏠 Novo Lead: ${name}${cidade ? ` - ${cidade}` : ''} - ${source === 'popup_home' ? 'Pop-up Home' : 'Formulário de Contato'}`,
       html: `
@@ -91,7 +91,7 @@ const handler = async (req: Request): Promise<Response> => {
                style="background: linear-gradient(135deg, #25D366, #128C7E); color: #fff; padding: 15px 30px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block; margin: 5px;">
               📱 Responder via WhatsApp
             </a>
-            <a href="mailto:${email}?subject=Re: Interesse em Imóveis - Corretor Andrews Franco" 
+            <a href="mailto:${email}?subject=Re: Interesse em Imóveis - AF Negócios Imobiliários" 
                style="background: linear-gradient(135deg, #FFC107, #FF8F00); color: #000; padding: 15px 30px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block; margin: 5px;">
               ✉️ Responder via Email
             </a>
@@ -111,16 +111,16 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Email de confirmação para o lead
     const confirmationResponse = await resend.emails.send({
-      from: "Andrews Franco <onboarding@resend.dev>",
+      from: "AF Negócios Imobiliários <onboarding@resend.dev>",
       to: [email],
-      subject: "Obrigado pelo seu interesse - Corretor Andrews Franco",
+      subject: "Obrigado pelo seu interesse - AF Negócios Imobiliários",
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #000; color: #fff; padding: 40px 20px;">
           <div style="text-align: center; margin-bottom: 40px;">
             <div style="background: linear-gradient(135deg, #FFC107, #FF8F00); width: 80px; height: 80px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 20px;">
               <span style="color: #000; font-size: 24px; font-weight: bold;">AF</span>
             </div>
-            <h1 style="color: #FFC107; margin: 0;">Corretor Andrews Franco</h1>
+            <h1 style="color: #FFC107; margin: 0;">AF Negócios Imobiliários</h1>
           </div>
           
           <h2 style="color: #FFC107;">Olá, ${name}!</h2>
@@ -160,7 +160,7 @@ const handler = async (req: Request): Promise<Response> => {
           <hr style="border: none; height: 1px; background: #333; margin: 30px 0;">
           
           <p style="text-align: center; color: #666; font-size: 14px;">
-            <strong>Andrews Franco - Corretor de Imóveis</strong><br>
+            <strong>AF Negócios Imobiliários</strong><br>
             2+ anos de experiência | 60+ imóveis vendidos e alugados<br>
             📞 51981220279 | 📧 andrews@corretorandrews.com.br
           </p>
