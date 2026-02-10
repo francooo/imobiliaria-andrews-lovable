@@ -35,7 +35,7 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Email para o corretor (notificação de novo lead)
     const notificationResponse = await resend.emails.send({
-      from: "Site Andrews Franco <onboarding@resend.dev>",
+      from: "AF Negócios Imobiliários <onboarding@resend.dev>",
       to: ["andrewsfranco93@gmail.com"],
       subject: `🏠 Novo Lead: ${name}${cidade ? ` - ${cidade}` : ''} - ${source === 'popup_home' ? 'Pop-up Home' : 'Formulário de Contato'}`,
       html: `
