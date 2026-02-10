@@ -138,7 +138,7 @@ const HeroSection = () => {
           {/* Stats - Mobile Grid */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 mt-8 sm:mt-12 max-w-3xl mx-auto">
             {[
-              { value: "60+", label: "Imóveis Vendidos" },
+              { value: "30+", label: "Imóveis Vendidos" },
               { value: "2+", label: "Anos de Experiência" },
               { value: "100%", label: "Clientes Satisfeitos" },
               { value: "24h", label: "Atendimento" },

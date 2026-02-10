@@ -161,8 +161,8 @@ const handler = async (req: Request): Promise<Response> => {
           
           <p style="text-align: center; color: #666; font-size: 14px;">
             <strong>AF Negócios Imobiliários</strong><br>
-            2+ anos de experiência | 60+ imóveis vendidos e alugados<br>
-            📞 51981220279 | 📧 andrews@corretorandrews.com.br
+            2+ anos de experiência | 30+ imóveis vendidos e alugados<br>
+            📞 51981220279 | 📧 andrewsfranco93@gmail.com
           </p>
         </div>
       `,
