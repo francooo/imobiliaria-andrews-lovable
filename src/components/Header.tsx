@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Phone } from "lucide-react";
+import { Phone, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import MobileNav from "./MobileNav";
@@ -90,6 +90,15 @@ const Header = () => {
               <Phone className="w-4 h-4 text-primary" />
               <span>(51) 98122-0279</span>
             </a>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => window.location.href = '/cliente/login'}
+              className="min-h-[40px]"
+            >
+              <User className="w-4 h-4 mr-1" />
+              Área Cliente
+            </Button>
             <Button
               variant="outline"
               size="sm"
