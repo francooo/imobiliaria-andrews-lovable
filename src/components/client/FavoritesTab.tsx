@@ -30,7 +30,7 @@ export function FavoritesTab() {
 
     const fetchFavorites = async () => {
         try {
-            const { data, error } = await supabase
+            const { data, error } = await (supabase as any)
                 .from('favorites')
                 .select(`
           id,
@@ -52,7 +52,7 @@ export function FavoritesTab() {
 
     const removeFavorite = async (favoriteId: string) => {
         try {
-            const { error } = await supabase
+            const { error } = await (supabase as any)
                 .from('favorites')
                 .delete()
                 .eq('id', favoriteId);

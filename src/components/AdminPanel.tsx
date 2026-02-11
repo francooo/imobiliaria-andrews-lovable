@@ -103,7 +103,7 @@ const AdminPanel = () => {
     e.preventDefault();
 
     try {
-      const propertyData: PropertyInsert = {
+      const propertyData = {
         title: formData.title,
         description: formData.description || null,
         property_type: formData.property_type,
@@ -123,7 +123,7 @@ const AdminPanel = () => {
         active: formData.active,
         featured: formData.featured,
         images: formData.images || []
-      };
+      } as any;
 
       let error;
       if (editingProperty) {
@@ -169,11 +169,11 @@ const AdminPanel = () => {
       price_min: property.price_min?.toString() || '',
       // Regra de negócio: limpar price_max se transaction_type for aluguel
       price_max: property.transaction_type === 'aluguel' ? '' : (property.price_max?.toString() || ''),
-      cep: property.cep || '',
+      cep: (property as any).cep || '',
       city: property.city || '',
       neighborhood: property.neighborhood || '',
-      state: property.state || '',
-      street: property.street || '',
+      state: (property as any).state || '',
+      street: (property as any).street || '',
       bedrooms: property.bedrooms?.toString() || '',
       bathrooms: property.bathrooms?.toString() || '',
       parking_spots: property.parking_spots?.toString() || '',

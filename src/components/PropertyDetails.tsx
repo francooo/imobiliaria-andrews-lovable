@@ -87,12 +87,13 @@ const PropertyDetails = () => {
   };
 
   const getFullAddress = () => {
+    const prop = property as any;
     const parts = [
-      property.street,
+      prop.street,
       property.neighborhood,
       property.city,
-      property.state,
-      property.cep
+      prop.state,
+      prop.cep
     ].filter(Boolean);
 
     return parts.join(', ');
@@ -397,11 +398,11 @@ const PropertyDetails = () => {
                 })()}
               </div>
               <p className="text-sm text-muted-foreground mt-2">
-                {property.street && `${property.street}, `}
+                {(property as any).street && `${(property as any).street}, `}
                 {property.neighborhood && `${property.neighborhood}, `}
                 {property.city}
-                {property.state && ` - ${property.state}`}
-                {property.cep && ` - ${property.cep}`}
+                {(property as any).state && ` - ${(property as any).state}`}
+                {(property as any).cep && ` - ${(property as any).cep}`}
               </p>
               {getFullAddress() && (
                 <a
