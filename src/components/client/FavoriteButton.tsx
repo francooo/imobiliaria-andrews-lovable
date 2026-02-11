@@ -27,7 +27,7 @@ export function FavoriteButton({ propertyId, variant = 'icon', className = '' }:
         if (!user) return;
 
         try {
-            const { data, error } = await supabase
+            const { data, error } = await (supabase as any)
                 .from('favorites')
                 .select('id')
                 .eq('user_id', user.id)
@@ -56,7 +56,7 @@ export function FavoriteButton({ propertyId, variant = 'icon', className = '' }:
         try {
             if (isFavorited) {
                 // Remover dos favoritos
-                const { error } = await supabase
+                const { error } = await (supabase as any)
                     .from('favorites')
                     .delete()
                     .eq('user_id', user.id)
@@ -66,7 +66,7 @@ export function FavoriteButton({ propertyId, variant = 'icon', className = '' }:
                 setIsFavorited(false);
             } else {
                 // Adicionar aos favoritos
-                const { error } = await supabase
+                const { error } = await (supabase as any)
                     .from('favorites')
                     .insert({
                         user_id: user.id,

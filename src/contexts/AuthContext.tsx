@@ -43,14 +43,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     // Buscar perfil do usuário
     const fetchProfile = async (userId: string) => {
         try {
-            const { data, error } = await supabase
+            const { data, error } = await (supabase as any)
                 .from('profiles')
                 .select('*')
                 .eq('id', userId)
                 .single();
 
             if (error) throw error;
-            setProfile(data);
+            setProfile(data as Profile);
         } catch (error) {
             console.error('Erro ao buscar perfil:', error);
         }
@@ -132,7 +132,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const updateProfile = async (data: Partial<Profile>) => {
         if (!user) throw new Error('Usuário não autenticado');
 
-        const { error } = await supabase
+        const { error } = await (supabase as any)
             .from('profiles')
             .update(data)
             .eq('id', user.id);

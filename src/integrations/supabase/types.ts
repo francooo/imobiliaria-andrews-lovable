@@ -14,6 +14,35 @@ export type Database = {
   }
   public: {
     Tables: {
+      favorites: {
+        Row: {
+          created_at: string
+          id: string
+          property_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          property_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          property_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "favorites_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       leads: {
         Row: {
           bairro: string | null
@@ -70,12 +99,46 @@ export type Database = {
           },
         ]
       }
+      profiles: {
+        Row: {
+          created_at: string
+          email: string
+          endereco: string
+          id: string
+          nome: string
+          telefone: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          email?: string
+          endereco?: string
+          id?: string
+          nome?: string
+          telefone?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          endereco?: string
+          id?: string
+          nome?: string
+          telefone?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       properties: {
         Row: {
           active: boolean | null
           area_m2: number | null
           bathrooms: number | null
           bedrooms: number | null
+          cep: string | null
           city: string | null
           created_at: string
           description: string | null
@@ -87,6 +150,8 @@ export type Database = {
           price_max: number | null
           price_min: number | null
           property_type: string
+          state: string | null
+          street: string | null
           title: string
           transaction_type: string
           updated_at: string
@@ -96,6 +161,7 @@ export type Database = {
           area_m2?: number | null
           bathrooms?: number | null
           bedrooms?: number | null
+          cep?: string | null
           city?: string | null
           created_at?: string
           description?: string | null
@@ -107,6 +173,8 @@ export type Database = {
           price_max?: number | null
           price_min?: number | null
           property_type: string
+          state?: string | null
+          street?: string | null
           title: string
           transaction_type: string
           updated_at?: string
@@ -116,6 +184,7 @@ export type Database = {
           area_m2?: number | null
           bathrooms?: number | null
           bedrooms?: number | null
+          cep?: string | null
           city?: string | null
           created_at?: string
           description?: string | null
@@ -127,6 +196,8 @@ export type Database = {
           price_max?: number | null
           price_min?: number | null
           property_type?: string
+          state?: string | null
+          street?: string | null
           title?: string
           transaction_type?: string
           updated_at?: string
