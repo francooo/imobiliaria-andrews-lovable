@@ -10,6 +10,8 @@ import { Badge } from "@/components/ui/badge";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import ImageUpload from "./ImageUpload";
+import CepInput from "./CepInput";
+import type { CepData } from "@/hooks/useCep";
 import { Database } from "@/integrations/supabase/types";
 import AdminMenu from "./admin/AdminMenu";
 import DashboardSummary from "./admin/DashboardSummary";
@@ -31,8 +33,11 @@ const AdminPanel = () => {
     transaction_type: '',
     price_min: '',
     price_max: '',
+    cep: '',
     city: '',
     neighborhood: '',
+    state: '',
+    street: '',
     bedrooms: '',
     bathrooms: '',
     parking_spots: '',
@@ -72,7 +77,26 @@ const AdminPanel = () => {
   };
 
   const handleInputChange = (field: string, value: any) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+    setFormData(prev => {
+      const updated = { ...prev, [field]: value };
+
+      // Regra de negócio: limpar price_max quando transaction_type for aluguel
+      if (field === 'transaction_type' && value === 'aluguel') {
+        updated.price_max = '';
+      }
+
+      return updated;
+    });
+  };
+
+  const handleCepAutocomplete = (data: CepData) => {
+    setFormData(prev => ({
+      ...prev,
+      city: data.cidade,
+      neighborhood: data.bairro,
+      state: data.estado,
+      street: data.logradouro
+    }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -85,9 +109,13 @@ const AdminPanel = () => {
         property_type: formData.property_type,
         transaction_type: formData.transaction_type,
         price_min: formData.price_min ? parseFloat(formData.price_min) : null,
-        price_max: formData.price_max ? parseFloat(formData.price_max) : null,
+        // Regra de negócio: forçar price_max como null quando transaction_type for aluguel
+        price_max: formData.transaction_type === 'aluguel' ? null : (formData.price_max ? parseFloat(formData.price_max) : null),
+        cep: formData.cep || null,
         city: formData.city,
         neighborhood: formData.neighborhood || null,
+        state: formData.state || null,
+        street: formData.street || null,
         bedrooms: formData.bedrooms ? parseInt(formData.bedrooms) : null,
         bathrooms: formData.bathrooms ? parseInt(formData.bathrooms) : null,
         parking_spots: formData.parking_spots ? parseInt(formData.parking_spots) : null,
@@ -139,9 +167,13 @@ const AdminPanel = () => {
       property_type: property.property_type,
       transaction_type: property.transaction_type,
       price_min: property.price_min?.toString() || '',
-      price_max: property.price_max?.toString() || '',
+      // Regra de negócio: limpar price_max se transaction_type for aluguel
+      price_max: property.transaction_type === 'aluguel' ? '' : (property.price_max?.toString() || ''),
+      cep: property.cep || '',
       city: property.city || '',
       neighborhood: property.neighborhood || '',
+      state: property.state || '',
+      street: property.street || '',
       bedrooms: property.bedrooms?.toString() || '',
       bathrooms: property.bathrooms?.toString() || '',
       parking_spots: property.parking_spots?.toString() || '',
@@ -236,6 +268,15 @@ const AdminPanel = () => {
                   </div>
 
                   <div>
+                    <Label htmlFor="cep">CEP</Label>
+                    <CepInput
+                      value={formData.cep}
+                      onChange={(cep) => handleInputChange('cep', cep)}
+                      onAddressFound={handleCepAutocomplete}
+                    />
+                  </div>
+
+                  <div>
                     <Label htmlFor="city">Cidade *</Label>
                     <Input
                       id="city"
@@ -246,11 +287,32 @@ const AdminPanel = () => {
                   </div>
 
                   <div>
+                    <Label htmlFor="state">Estado</Label>
+                    <Input
+                      id="state"
+                      value={formData.state}
+                      onChange={(e) => handleInputChange('state', e.target.value)}
+                      maxLength={2}
+                      placeholder="SP"
+                    />
+                  </div>
+
+                  <div>
                     <Label htmlFor="neighborhood">Bairro</Label>
                     <Input
                       id="neighborhood"
                       value={formData.neighborhood}
                       onChange={(e) => handleInputChange('neighborhood', e.target.value)}
+                    />
+                  </div>
+
+                  <div>
+                    <Label htmlFor="street">Logradouro</Label>
+                    <Input
+                      id="street"
+                      value={formData.street}
+                      onChange={(e) => handleInputChange('street', e.target.value)}
+                      placeholder="Rua, Avenida, etc."
                     />
                   </div>
 
@@ -296,12 +358,17 @@ const AdminPanel = () => {
                   </div>
 
                   <div>
-                    <Label htmlFor="price_max">Preço Máximo</Label>
+                    <Label htmlFor="price_max" className={formData.transaction_type === 'aluguel' ? 'text-muted-foreground' : ''}>
+                      Preço Máximo
+                      {formData.transaction_type === 'aluguel' && ' (não aplicável para aluguel)'}
+                    </Label>
                     <Input
                       id="price_max"
                       type="number"
                       value={formData.price_max}
                       onChange={(e) => handleInputChange('price_max', e.target.value)}
+                      disabled={formData.transaction_type === 'aluguel'}
+                      className={formData.transaction_type === 'aluguel' ? 'opacity-50 cursor-not-allowed' : ''}
                     />
                   </div>
 
