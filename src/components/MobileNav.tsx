@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Menu, X, Phone, ChevronRight } from "lucide-react";
+import { Menu, X, Phone, ChevronRight, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -77,6 +77,17 @@ const MobileNav = ({ onNavigate }: MobileNavProps) => {
 
           {/* Botões de ação */}
           <div className="space-y-3 pt-2">
+            <Button
+              variant="outline"
+              onClick={() => {
+                window.location.href = '/cliente/login';
+                setIsOpen(false);
+              }}
+              className="w-full min-h-[48px] text-base touch-manipulation"
+            >
+              <User className="w-4 h-4 mr-2" />
+              Área Cliente
+            </Button>
             <Button
               variant="outline"
               onClick={() => {
