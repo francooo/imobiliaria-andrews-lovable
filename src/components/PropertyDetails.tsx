@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { ChevronLeft, MapPin, Bed, Bath, Car, Maximize, Share2, Heart, Phone } from "lucide-react";
+import { ChevronLeft, ChevronRight, MapPin, Bed, Bath, Car, Maximize, Share2, Heart, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { supabase } from "@/integrations/supabase/client";
 import { Database } from "@/integrations/supabase/types";
+import { FavoriteButton } from "@/components/client/FavoriteButton";
 
 type Property = Database['public']['Tables']['properties']['Row'];
 
@@ -14,7 +15,6 @@ const PropertyDetails = () => {
   const [property, setProperty] = useState<Property | null>(null);
   const [loading, setLoading] = useState(true);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [isFavorited, setIsFavorited] = useState(false);
 
   useEffect(() => {
     if (id) {
@@ -80,6 +80,62 @@ const PropertyDetails = () => {
     window.open(whatsappUrl, '_blank');
   };
 
+  const nextImage = () => {
+    setCurrentImageIndex((prevIndex) =>
+      prevIndex === images.length - 1 ? 0 : prevIndex + 1
+    );
+  };
+
+  const getFullAddress = () => {
+    const parts = [
+      property.street,
+      property.neighborhood,
+      property.city,
+      property.state,
+      property.cep
+    ].filter(Boolean);
+
+    return parts.join(', ');
+  };
+
+  const previousImage = () => {
+    setCurrentImageIndex((prevIndex) =>
+      prevIndex === 0 ? images.length - 1 : prevIndex - 1
+    );
+  };
+
+  const handleShare = async () => {
+    const shareUrl = window.location.href;
+    const shareTitle = property?.title || 'Imóvel';
+    const shareText = `Confira este imóvel: ${shareTitle} - ${property?.city || ''}`;
+
+    // Tentar usar a Web Share API (nativa do navegador)
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: shareTitle,
+          text: shareText,
+          url: shareUrl,
+        });
+      } catch (error) {
+        // Usuário cancelou o compartilhamento ou erro
+        if ((error as Error).name !== 'AbortError') {
+          console.error('Erro ao compartilhar:', error);
+        }
+      }
+    } else {
+      // Fallback: copiar link para a área de transferência
+      try {
+        await navigator.clipboard.writeText(shareUrl);
+        alert('Link copiado para a área de transferência!');
+      } catch (error) {
+        console.error('Erro ao copiar link:', error);
+        // Fallback final: mostrar o link
+        prompt('Copie o link abaixo:', shareUrl);
+      }
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -117,32 +173,53 @@ const PropertyDetails = () => {
             </Button>
 
             <div className="flex items-center space-x-2">
-              <Button variant="outline" size="icon">
-                <Share2 className="w-4 h-4" />
-              </Button>
               <Button
                 variant="outline"
                 size="icon"
-                onClick={() => setIsFavorited(!isFavorited)}
-                className={isFavorited ? 'text-primary' : ''}
+                onClick={handleShare}
+                title="Compartilhar imóvel"
               >
-                <Heart className={`w-4 h-4 ${isFavorited ? 'fill-current' : ''}`} />
+                <Share2 className="w-4 h-4" />
               </Button>
+              <FavoriteButton
+                propertyId={property.id}
+                variant="icon"
+                className="border border-border"
+              />
             </div>
           </div>
         </div>
       </div>
 
       {/* Image Gallery */}
-      <div className="relative h-96 md:h-[500px] overflow-hidden">
+      <div className="relative h-96 md:h-[600px] bg-black flex items-center justify-center">
         <img
           src={images[currentImageIndex]}
           alt={property.title}
-          className="w-full h-full object-cover"
+          className="max-w-full max-h-full object-contain"
+          loading="eager"
         />
 
         {images.length > 1 && (
           <>
+            {/* Navigation Arrows */}
+            <button
+              onClick={previousImage}
+              className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-3 rounded-full transition-all duration-200 hover:scale-110 z-10"
+              aria-label="Imagem anterior"
+            >
+              <ChevronLeft className="w-6 h-6" />
+            </button>
+
+            <button
+              onClick={nextImage}
+              className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-3 rounded-full transition-all duration-200 hover:scale-110 z-10"
+              aria-label="Próxima imagem"
+            >
+              <ChevronRight className="w-6 h-6" />
+            </button>
+
+            {/* Dot Indicators */}
             <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
               {images.map((_, index) => (
                 <button
@@ -154,6 +231,7 @@ const PropertyDetails = () => {
               ))}
             </div>
 
+            {/* Image Counter */}
             <div className="absolute top-4 right-4 bg-black/50 text-white px-3 py-1 rounded-full text-sm">
               {currentImageIndex + 1} / {images.length}
             </div>
@@ -277,7 +355,11 @@ const PropertyDetails = () => {
                   WhatsApp: (51) 98122-0279
                 </Button>
 
-                <Button variant="outline" className="w-full">
+                <Button
+                  variant="outline"
+                  className="w-full"
+                  onClick={handleWhatsAppContact}
+                >
                   Solicitar Visita
                 </Button>
 
@@ -287,15 +369,50 @@ const PropertyDetails = () => {
               </div>
             </div>
 
-            {/* Map placeholder */}
+            {/* Map */}
             <div className="bg-card p-6 rounded-2xl border border-border">
               <h3 className="font-semibold text-foreground mb-4">Localização</h3>
-              <div className="aspect-video bg-muted rounded-lg flex items-center justify-center">
-                <MapPin className="w-8 h-8 text-muted-foreground" />
+              <div className="aspect-video bg-muted rounded-lg overflow-hidden">
+                {(() => {
+                  const fullAddress = getFullAddress();
+                  const mapUrl = fullAddress
+                    ? `https://www.google.com/maps?q=${encodeURIComponent(fullAddress)}&output=embed`
+                    : null;
+
+                  return mapUrl ? (
+                    <iframe
+                      src={mapUrl}
+                      className="w-full h-full"
+                      style={{ border: 0 }}
+                      allowFullScreen
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                      title="Localização do imóvel"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center bg-muted">
+                      <MapPin className="w-8 h-8 text-muted-foreground" />
+                    </div>
+                  );
+                })()}
               </div>
               <p className="text-sm text-muted-foreground mt-2">
-                {property.neighborhood ? `${property.neighborhood}, ` : ''}{property.city}
+                {property.street && `${property.street}, `}
+                {property.neighborhood && `${property.neighborhood}, `}
+                {property.city}
+                {property.state && ` - ${property.state}`}
+                {property.cep && ` - ${property.cep}`}
               </p>
+              {getFullAddress() && (
+                <a
+                  href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(getFullAddress())}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm text-primary hover:underline mt-2 inline-block"
+                >
+                  Ver no Google Maps →
+                </a>
+              )}
             </div>
           </div>
         </div>

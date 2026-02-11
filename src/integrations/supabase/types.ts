@@ -70,6 +70,77 @@ export type Database = {
           },
         ]
       }
+      profiles: {
+        Row: {
+          id: string
+          nome: string
+          telefone: string | null
+          endereco: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id: string
+          nome: string
+          telefone?: string | null
+          endereco?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          nome?: string
+          telefone?: string | null
+          endereco?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "profiles_id_fkey"
+            columns: ["id"]
+            isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      favorites: {
+        Row: {
+          id: string
+          user_id: string
+          property_id: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          property_id: string
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          property_id?: string
+          created_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "favorites_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "favorites_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       properties: {
         Row: {
           active: boolean | null
