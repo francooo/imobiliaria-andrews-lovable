@@ -7,7 +7,7 @@ import { User, Phone, MapPin, Lock, AlertCircle, CheckCircle } from 'lucide-reac
 
 export function ProfileTab() {
     const { profile, updateProfile } = useAuth();
-    const [isEditing, setIsEditing] = useState(false);
+    const [isEditing] = useState(true);
     const [formData, setFormData] = useState({
         telefone: profile?.telefone || '',
         endereco: profile?.endereco || '',
@@ -32,7 +32,6 @@ export function ProfileTab() {
         try {
             await updateProfile(formData);
             setSuccess(true);
-            setIsEditing(false);
             setTimeout(() => setSuccess(false), 3000);
         } catch (err: any) {
             console.error('Erro ao atualizar perfil:', err);
@@ -47,7 +46,6 @@ export function ProfileTab() {
             telefone: profile?.telefone || '',
             endereco: profile?.endereco || '',
         });
-        setIsEditing(false);
         setError('');
     };
 
@@ -125,33 +123,13 @@ export function ProfileTab() {
 
                     {/* Botões */}
                     <div className="flex gap-2">
-                        {!isEditing ? (
-                            <Button
-                                type="button"
-                                onClick={() => setIsEditing(true)}
-                                className="bg-gradient-primary hover:shadow-glow"
-                            >
-                                Editar Perfil
-                            </Button>
-                        ) : (
-                            <>
-                                <Button
-                                    type="submit"
-                                    className="bg-gradient-primary hover:shadow-glow"
-                                    disabled={loading}
-                                >
-                                    {loading ? 'Salvando...' : 'Salvar Alterações'}
-                                </Button>
-                                <Button
-                                    type="button"
-                                    variant="outline"
-                                    onClick={handleCancel}
-                                    disabled={loading}
-                                >
-                                    Cancelar
-                                </Button>
-                            </>
-                        )}
+                        <Button
+                            type="submit"
+                            className="bg-gradient-primary hover:shadow-glow"
+                            disabled={loading}
+                        >
+                            {loading ? 'Salvando...' : 'Salvar Alterações'}
+                        </Button>
                     </div>
                 </form>
             </div>
