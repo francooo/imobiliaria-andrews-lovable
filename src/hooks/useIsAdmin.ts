@@ -28,7 +28,7 @@ export function useIsAdmin() {
             }
 
             // Chamar a função RPC is_admin() para validação final
-            const { data, error } = await supabase.rpc('is_admin');
+            const { data, error } = await (supabase.rpc as any)('is_admin');
 
             if (error) {
                 console.error('Error calling is_admin():', error);

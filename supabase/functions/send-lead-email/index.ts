@@ -24,7 +24,22 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
-    const { name, email, phone, message, cidade, estado, source }: LeadEmailRequest = await req.json();
+    const body = await req.json();
+    const name = String(body.name || '').slice(0, 100);
+    const email = String(body.email || '').slice(0, 255);
+    const phone = String(body.phone || '').slice(0, 20);
+    const message = body.message ? String(body.message).slice(0, 1000) : undefined;
+    const cidade = body.cidade ? String(body.cidade).slice(0, 100) : undefined;
+    const estado = body.estado ? String(body.estado).slice(0, 2) : undefined;
+    const source = String(body.source || '').slice(0, 50);
+
+    // Validate required fields
+    if (!name || !email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return new Response(JSON.stringify({ error: 'Invalid name or email' }), {
+        status: 400,
+        headers: { "Content-Type": "application/json", ...corsHeaders },
+      });
+    }
 
     console.log("Recebido novo lead:", { name, email, phone, cidade, estado, source });
 
