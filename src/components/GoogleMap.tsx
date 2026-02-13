@@ -22,7 +22,7 @@ const GoogleMap = ({ className = "" }: GoogleMapProps) => {
     iframe.loading = 'lazy';
     iframe.allowFullscreen = true;
     iframe.referrerPolicy = 'no-referrer-when-downgrade';
-    iframe.src = `https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dO4Nv4L-YfL4MA&q=${encodeURIComponent(address)}`;
+    iframe.src = `https://maps.google.com/maps?q=${encodeURIComponent(address)}&t=&z=15&ie=UTF8&iwloc=&output=embed`;
     
     // Clear previous content and add iframe
     mapRef.current.innerHTML = '';
