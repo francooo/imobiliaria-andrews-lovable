@@ -250,6 +250,7 @@ export type Database = {
           total_properties: number
         }[]
       }
+      is_admin: { Args: never; Returns: boolean }
     }
     Enums: {
       [_ in never]: never
