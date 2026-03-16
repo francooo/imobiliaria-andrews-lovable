@@ -1,5 +1,5 @@
-import { MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import whatsappIcon from "@/assets/whatsapp-icon.png";
 
 const WhatsAppFloat = () => {
   const handleWhatsAppClick = () => {
@@ -11,10 +11,10 @@ const WhatsAppFloat = () => {
       <Button
         onClick={handleWhatsAppClick}
         size="lg"
-        className="w-14 h-14 min-w-[56px] min-h-[56px] rounded-full bg-green-500 hover:bg-green-600 text-white shadow-lg hover:shadow-xl transition-all duration-300 animate-pulse hover:animate-none hover:scale-110 touch-manipulation"
+        className="w-14 h-14 min-w-[56px] min-h-[56px] rounded-full p-0 bg-transparent hover:bg-transparent shadow-lg hover:shadow-xl transition-all duration-300 animate-pulse hover:animate-none hover:scale-110 touch-manipulation"
         aria-label="Falar no WhatsApp"
       >
-        <MessageCircle className="w-6 h-6" />
+        <img src={whatsappIcon} alt="WhatsApp" className="w-14 h-14 rounded-full" />
       </Button>
     </div>
   );
